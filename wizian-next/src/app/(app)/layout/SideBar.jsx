@@ -2,13 +2,23 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBook } from "@fortawesome/free-solid-svg-icons";
 
 const SideBar = () => {
     const [isCollapsed, setIsCollapsed] = useState(true);
 
-    const toggleSubMenu = (e) => {
-        e.preventDefault(); // 페이지 이동 방지
-        setIsCollapsed((prev) => !prev);
+    const [collapsedMenus, setCollapsedMenus] = useState({
+        post: true,
+        course: true,
+    });
+
+    const toggleSubMenu = (menuKey) => (e) => {
+        e.preventDefault();
+        setCollapsedMenus((prev) => ({
+            ...prev,
+            [menuKey]: !prev[menuKey],
+        }));
     };
 
     return (
@@ -21,28 +31,62 @@ const SideBar = () => {
                                 <i className="lnr lnr-home"></i> <span>Dashboard</span>
                             </Link>
                         </li>
-                        <li>
-                            <Link href="/elements">
-                                <i className="lnr lnr-code"></i> <span>Elements</span>
-                            </Link>
-                        </li>
+
                         <li>
                             <Link href="/myinfo">
-                                <i className="lnr lnr-chart-bars"></i> <span>개인정보</span>
+                                <i className="lnr lnr-user"></i> <span>개인정보 변경</span>
                             </Link>
                         </li>
                         <li>
-                            <Link href="/panels">
-                                <i className="lnr lnr-cog"></i> <span>Panels</span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="/notifications">
-                                <i className="lnr lnr-alarm"></i> <span>Notifications</span>
-                            </Link>
+                            <a
+                                href="#postSubMenu"
+                                className={`collapsed ${collapsedMenus.post ? "" : "active"}`}
+                                onClick={toggleSubMenu("post")}
+                            >
+                                <i className="lnr lnr-pencil"></i>
+                                <span>내 게시글 관리</span>
+                            </a>
+
+                            <div id="subPages" className={`collapse ${collapsedMenus.post ? "" : "show"}`}>
+                                <ul className="nav">
+                                    <li>
+                                        <Link href="/dashboard">강의게시판</Link>
+                                    </li>
+                                    <li>
+                                        <Link href="/dashboard">Q&A</Link>
+                                    </li>
+                                </ul>
+                            </div>
+
                         </li>
 
                         <li>
+                            <a
+                                href="#courseSubMenu"
+                                className={`collapsed ${collapsedMenus.course ? "" : "active"}`}
+                                onClick={toggleSubMenu("course")}
+                            >
+                                <FontAwesomeIcon icon={faBook} className="fa-icon" />
+                                <span>수강 관리</span>
+                            </a>
+
+                            <div id="subPages" className={`collapse ${collapsedMenus.course ? "" : "show"}`}>
+                                <ul className="nav">
+                                    <li>
+                                        <Link href="/dashboard">수강중인 과정</Link>
+                                    </li>
+                                    <li>
+                                        <Link href="/dashboard">완료 과정</Link>
+                                    </li>
+                                    <li>
+                                        <Link href="/dashboard">수료증 발급</Link>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+
+
+                        {/* <li>
                             <a
                                 href="#subPages"
                                 className={`collapsed ${isCollapsed ? "" : "active"}`}
@@ -65,7 +109,7 @@ const SideBar = () => {
                                     </li>
                                 </ul>
                             </div>
-                        </li>
+                        </li> */}
 
                         <li>
                             <Link href="/tables">

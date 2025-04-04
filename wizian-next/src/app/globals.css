@@ -14,3 +14,13 @@
 .navbar .brand .logo {
     max-height: 50px; /* 로고 크기 조정 */
 }
+
+
+.fa-icon {
+    font-size: 16px;
+    margin-right: 6px;
+    vertical-align: middle;
+    line-height: 1;
+    display: inline-block;
+    color: #777;
+}
