@@ -1,0 +1,16 @@
+/*Header.jsx css*/
+.navbar {
+    height: 70px; /* 기본보다 더 크게 설정 */
+    min-height: 70px;
+    padding: 10px 15px;
+}
+
+.navbar .brand {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.navbar .brand .logo {
+    max-height: 50px; /* 로고 크기 조정 */
+}
