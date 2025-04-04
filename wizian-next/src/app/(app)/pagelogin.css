@@ -1,0 +1,62 @@
+/*pageLogin css */
+.logo {
+    margin-bottom: 50px;
+}
+
+.tab-buttons {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.tab-buttons button {
+    margin: 0 0.75rem;
+    padding: 0.95rem 2rem;
+    font-size: 1.8rem;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.tab-buttons button.active:hover {
+    background-color: #342462;
+    color: white;
+}
+
+.tab-buttons button.active {
+    background-color: #342462;
+    color: white;
+    font-weight: bold;
+}
+
+.btn-login {
+    background-color: #342462;
+    color: white;
+    font-weight: bold !important;
+}
+
+.btn-login:hover {
+    background-color: #1f1544;
+    color: white !important;
+}
+
+.btn-kakao {
+    background-color: #fee502;
+    color: #000000;
+    font-weight: bold !important;
+}
+.btn-kakao:hover {
+    background-color: #ead302;
+    color: #000000;
+}
+
+.btn-google {
+    background-color: #4386f4;
+    color: #000000;
+    font-weight: bold !important;
+}
+.btn-google:hover {
+    background-color: #4366f4;
+    color: #000000;
+}
