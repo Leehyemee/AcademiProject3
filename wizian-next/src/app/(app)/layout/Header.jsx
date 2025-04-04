@@ -82,7 +82,7 @@ const Header = () => {
         <nav className="navbar navbar-default navbar-fixed-top">
             <div className="brand">
                 <a href="/dashboard">
-                    <img src="/assets/img/logo-dark.png" alt="Klorofil Logo" className="img-responsive logo" />
+                    <img src="/assets/img/academiLogo.jpg" alt="Logo" className="img-responsive logo" />
                 </a>
             </div>
             <div className="container-fluid">
@@ -128,7 +128,7 @@ const Header = () => {
                                     report is available</a></li>
                                 <li><a href="#" className="notification-item"><span className="dot bg-warning"></span>Weekly
                                     meeting in 1 hour</a></li>
-                                <li><a href="#" className="notification-item"><span classNama="dot bg-success"></span>Your
+                                <li><a href="#" className="notification-item"><span className="dot bg-success"></span>Your
                                     request has been approved</a></li>
                                 <li><a href="#" className="more">See all notifications</a></li>
                             </ul>
