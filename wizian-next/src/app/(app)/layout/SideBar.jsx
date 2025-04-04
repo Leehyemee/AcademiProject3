@@ -27,8 +27,8 @@ const SideBar = () => {
                             </Link>
                         </li>
                         <li>
-                            <Link href="/charts">
-                                <i className="lnr lnr-chart-bars"></i> <span>Charts</span>
+                            <Link href="/myinfo">
+                                <i className="lnr lnr-chart-bars"></i> <span>개인정보</span>
                             </Link>
                         </li>
                         <li>
