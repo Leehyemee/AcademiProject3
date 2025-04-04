@@ -1,0 +1,134 @@
+.container {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    padding: 40px;
+    font-family: 'Noto Sans KR', sans-serif;
+    max-width: 600px; /* 카드 너비 */
+    margin: 50px auto; /* 가운데 정렬 */
+    text-align: left; /* 전체 왼쪽 정렬 */
+}
+
+.myinfo {
+    font-size: 26px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+/* 공통 필드 박스 */
+form > div {
+    margin-bottom: 18px;
+}
+
+/* 라벨 */
+label {
+    font-weight: 600;
+    color: #333;
+    display: block;
+    margin-bottom: 6px;
+}
+
+/* 텍스트 필드 */
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease;
+}
+
+input:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+/* 읽기 전용 정보 */
+form > div span {
+    font-weight: 500;
+    color: #555;
+}
+
+/* 버튼 영역 */
+.flex {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.btn-complate,
+.btn-cansle {
+    padding: 10px 30px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-complate {
+    background-color: #2ecc71;
+    color: white;
+}
+
+.btn-complate:hover {
+    background-color: #27ae60;
+}
+
+.btn-cansle {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.btn-cansle:hover {
+    background-color: #c0392b;
+}
+
+input {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease;
+    font-family: inherit; /* 브라우저 기본 폰트 차이 방지 */
+    letter-spacing: normal; /* 패스워드 특유의 스페이싱 제거 */
+}
+
+.address-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.address-input {
+    flex: 1;
+    max-width: 80%;
+    padding: 10px 14px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+.search-address-btn {
+    padding: 10px 16px;
+    font-size: 14px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.search-address-btn:hover {
+    background-color: #0056b3;
+}
