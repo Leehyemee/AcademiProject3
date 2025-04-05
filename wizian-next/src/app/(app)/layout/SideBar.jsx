@@ -33,10 +33,31 @@ const SideBar = () => {
                         </li>
 
                         <li>
-                            <Link href="/myinfo">
-                                <i className="lnr lnr-user"></i> <span>개인정보 변경</span>
-                            </Link>
+                            <a
+                                href="#courseSubMenu"
+                                className={`collapsed ${collapsedMenus.course ? "" : "active"}`}
+                                onClick={toggleSubMenu("course")}
+                            >
+                                <i className="lnr lnr-heart"></i>
+                                <span>수강 관리</span>
+                            </a>
+
+                            <div id="subPages" className={`collapse ${collapsedMenus.course ? "" : "show"}`}>
+                                <ul className="nav">
+                                    <li>
+                                        <Link href="/dashboard">수강중인 과정</Link>
+                                    </li>
+                                    <li>
+                                        <Link href="/dashboard">완료 과정</Link>
+                                    </li>
+                                    <li>
+                                        <Link href="/dashboard">수료증 발급</Link>
+                                    </li>
+                                </ul>
+                            </div>
                         </li>
+
+
                         <li>
                             <a
                                 href="#postSubMenu"
@@ -60,30 +81,15 @@ const SideBar = () => {
 
                         </li>
 
-                        <li>
-                            <a
-                                href="#courseSubMenu"
-                                className={`collapsed ${collapsedMenus.course ? "" : "active"}`}
-                                onClick={toggleSubMenu("course")}
-                            >
-                                <FontAwesomeIcon icon={faBook} className="fa-icon" />
-                                <span>수강 관리</span>
-                            </a>
 
-                            <div id="subPages" className={`collapse ${collapsedMenus.course ? "" : "show"}`}>
-                                <ul className="nav">
-                                    <li>
-                                        <Link href="/dashboard">수강중인 과정</Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/dashboard">완료 과정</Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/dashboard">수료증 발급</Link>
-                                    </li>
-                                </ul>
-                            </div>
+                        <li>
+                            <Link href="/myinfo">
+                                <i className="lnr lnr-user"></i> <span>마이페이지</span>
+                            </Link>
                         </li>
+
+
+
 
 
                         {/* <li>
