@@ -44,10 +44,10 @@ const PageLogin = () => {
                                 <input type="password" className="form-control" placeholder="비밀번호" />
                             </div>
 
-                            <div className="form-group remember-signup-wrap">
+                            <div className="form-group remember-join-wrap">
                                 <label className="fancy-checkbox">
                                     <input type="checkbox" />
-                                    <span>기억하기</span>
+                                    <span className="rem-text">기억하기</span>
                                 </label>
 
                             </div>
@@ -56,8 +56,8 @@ const PageLogin = () => {
                                 <>
                                     <div className="login-btn-wrap student">
                                         <button type="submit" className="btn btn-login">학생 로그인</button>
-                                        <Link href="/signup">
-                                            <button type="button" className="btn btn-signup">회원가입</button>
+                                        <Link href="/join">
+                                            <button type="button" className="btn btn-join">회원가입</button>
                                         </Link>
                                     </div>
                                     <div className="sns-login-wrap">

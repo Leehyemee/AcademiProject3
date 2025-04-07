@@ -61,7 +61,7 @@
     color: #000000;
 }
 
-.signup-link {
+.join-link {
     display: flex;
     justify-content: flex-end;
     color: #000000;
@@ -82,7 +82,7 @@
     gap: 0.5rem;
     margin-bottom: 1rem;
 }
-.btn-signup {
+.btn-join {
     background-color: #342462;
     color: #ffffff;
     font-weight: bold !important;
@@ -91,7 +91,7 @@
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.btn-signup:hover {
+.btn-join:hover {
     background-color: #1f1544;
     color: white !important;
 }
@@ -108,14 +108,17 @@
     margin-top: 1rem;
 }
 
-.remember-signup-wrap {
+.remember-join-wrap {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+
+}
+.rem-text{
+    color: #a1a1a1;
 }
 
 .btn-login,
-.btn-signup,
+.btn-join,
 .btn-kakao,
 .btn-google {
     width: 200px;
@@ -159,12 +162,12 @@
         font-size: 1rem;
     }
 
-    .signup-link {
+    .join-link {
         justify-content: center;
         margin-top: 0.5rem;
     }
 
-    .remember-signup-wrap {
+    .remember-join-wrap {
         flex-direction: column;
         align-items: flex-start;
         gap: 0.5rem;
@@ -202,7 +205,7 @@
 
 @media (max-width: 480px) {
     .btn-login,
-    .btn-signup,
+    .btn-join,
     .btn-kakao,
     .btn-google {
         width: 140px;
