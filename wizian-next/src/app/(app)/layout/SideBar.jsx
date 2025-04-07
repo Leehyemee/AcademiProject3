@@ -38,7 +38,7 @@ const SideBar = () => {
                                 className={`collapsed ${collapsedMenus.course ? "" : "active"}`}
                                 onClick={toggleSubMenu("course")}
                             >
-                                <i className="lnr lnr-heart"></i>
+                                <i className="lnr lnr-graduation-hat"></i>
                                 <span>수강 관리</span>
                             </a>
 
