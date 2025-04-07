@@ -51,6 +51,7 @@ export default function RootLayout({ children }) {
         <script src="/assets/vendor/jquery.easy-pie-chart/jquery.easypiechart.min.js" defer></script>
         <script src="/assets/vendor/chartist/js/chartist.min.js" defer></script>
         <script src="/assets/scripts/klorofil-common.js" defer></script>
+        <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
       </body>
 

@@ -172,7 +172,7 @@ const Join = () => {
                             <div className="logo mb-4">
                                 <img src="/assets/img/academiLogo_login.jpg" alt="Klorofil Logo" />
                             </div>
-                            <h4>학생 회원가입</h4>
+                            <h2><i className="lnr lnr-pointer-right"></i> 학생 회원가입</h2>
                         </div>
 
                         <form name="joinfrm" id="joinfrm" method="post" ref={formJoinRef}
@@ -207,9 +207,9 @@ const Join = () => {
                                 {errors.stdnt_nm && <p className="error-msg">{errors.stdnt_nm}</p>}
                             </div>
 
-                            <div className="form-group">
+                            <div className="form-group gender-wrap">
                                 <label>성별</label>
-                                <div style={{ display: "flex", gap: "0.75rem" }}>
+                                <div className="gender-options">
                                     <button
                                         type="button"
                                         className={`gender-btn ${form.gen_cd === "M" ? "active" : ""}`}
@@ -248,7 +248,18 @@ const Join = () => {
                                         type="button"
                                         className="btn-zipcode"
                                         onClick={() => {
-                                            alert("주소 검색 기능은 다음 api 사용 예정");
+                                            new window.daum.Postcode({
+                                                oncomplete: function (data) {
+                                                    const fullAddress = data.address;
+                                                    const zonecode = data.zonecode;
+
+                                                    setForm(prev => ({
+                                                        ...prev,
+                                                        zip_cd: zonecode,
+                                                        addr: fullAddress
+                                                    }));
+                                                }
+                                            }).open();
                                         }}
                                     >
                                         주소 검색
@@ -266,7 +277,8 @@ const Join = () => {
 
                             <div className="form-group">
                                 <label>상세주소</label>
-                                <input name="addr_dtl" onChange={handleChange} value={form.addr_dtl} type="text" />
+                                <input name="addr_dtl" onChange={handleChange} value={form.addr_dtl} type="text"
+                                       placeholder="필요 시 상세주소 입력"/>
                             </div>
 
                             <div className="form-button-row">

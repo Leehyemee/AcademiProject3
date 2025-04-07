@@ -65,11 +65,20 @@
 
 /* 남/여 성별 버튼 스타일 */
 .gender-wrap {
-    flex-direction: column;
+    flex-direction: row;
     display: flex;
-    justify-content: center;
+    align-items: center;
     gap: 1rem;
-    margin: 1rem 0;
+    margin: 1rem auto;
+    max-width: 400px;
+}
+
+.gender-wrap label {
+    margin: 0;
+    font-weight: bold;
+    color: #333;
+    font-size: 0.95rem;
+    min-width: 60px; /* label 고정 넓이 주면 레이아웃 안정감 생김 */
 }
 
 .gender-options {
@@ -94,7 +103,7 @@
     color: white;
 }
 
-/* 버튼들 */
+
 .form-join .btn {
     width: 100%;
     max-width: 400px;
@@ -170,4 +179,29 @@
 input::placeholder {
     font-size: 0.85rem;
     color: #999;
+}
+
+.join-box .header h2 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #1f1544; /* 차분한 딥네이비 */
+    text-align: center;
+    margin-bottom: 2.5rem;
+    position: relative;
+    letter-spacing: 0.5px;
+    font-family: 'Noto Sans KR', sans-serif;
+
+}
+
+.join-box .header h2::after {
+    content: "";
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 420px;
+    height: 3px;
+    background-color: #36275f;
+    border-radius: 1px;
+    opacity: 0.8;
 }
