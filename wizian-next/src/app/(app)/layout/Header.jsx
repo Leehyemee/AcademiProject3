@@ -94,18 +94,10 @@ const Header = () => {
                 </button>
                 </div>
 
-                <form className="navbar-form navbar-left">
-                    <div className="input-group">
-                        <input type="text" className="form-control" placeholder="Search dashboard..."/>
-                        <span className="input-group-btn">
-              <button type="button" className="btn btn-primary">Go</button>
-            </span>
-                    </div>
-                </form>
                 <div className="navbar-btn navbar-btn-right">
                     <a
                         className="btn btn-success update-pro"
-                        href="https://www.themeineed.com/downloads/klorofil-pro-bootstrap-admin-dashboard-template/?utm_source=klorofil&utm_medium=template&utm_campaign=KlorofilPro"
+                        href="/pageLogin"
                         title="Upgrade to Pro"
                         target="_blank"
                     >
@@ -133,18 +125,7 @@ const Header = () => {
                                 <li><a href="#" className="more">See all notifications</a></li>
                             </ul>
                         </li>
-                        <li className="dropdown">
-                            <a href="#" className="dropdown-toggle" data-toggle="dropdown">
-                                <i className="lnr lnr-question-circle"></i> <span>Help</span> <i
-                                className="icon-submenu lnr lnr-chevron-down"></i>
-                            </a>
-                            <ul className="dropdown-menu">
-                                <li><a href="#">Basic Use</a></li>
-                                <li><a href="#">Working With Data</a></li>
-                                <li><a href="#">Security</a></li>
-                                <li><a href="#">Troubleshooting</a></li>
-                            </ul>
-                        </li>
+
                         <li className="dropdown">
                             <a href="#" className="dropdown-toggle" data-toggle="dropdown">
                                 <img src="/assets/img/user.png" className="img-circle" alt="Avatar"/>
