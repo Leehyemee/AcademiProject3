@@ -12,7 +12,7 @@ const PageLogin = () => {
                     <div className="content">
                         <div className="header text-center">
                             <div className="logo mb-4">
-                                <img src="/assets/img/academiLogo.jpg" alt="Klorofil Logo" />
+                                <img src="/assets/img/academiLogo_login.jpg" alt="Klorofil Logo" />
                             </div>
                             <div className="tab-buttons flex justify-center mb-4">
                                 <button
