@@ -130,7 +130,7 @@
 }
 
 /* 반응형 */
-@media (max-width: 768px) {
+@media (max-width: 480px) {
     .login-box {
         padding: 30px 20px;
     }
@@ -141,8 +141,10 @@
     }
 
     .login-btn-wrap.student {
-        flex-direction: column;
-        align-items: stretch;
+        .login-btn-wrap.student {
+            flex-direction: row;
+            justify-content: center;
+            flex-wrap: wrap;
     }
 
     .login-btn-wrap.teacher {
@@ -203,6 +205,21 @@
     .btn-signup,
     .btn-kakao,
     .btn-google {
-        width: 100%;
+        width: 140px;
+        text-align: center;
+    }
+}}
+
+@media (max-width: 480px) {
+    .login-tab-buttons {
+        flex-direction: row;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .login-tab-buttons button {
+        width: 140px;
+        font-size: 1.2rem;
+        padding: 0.5rem 1rem;
     }
 }
