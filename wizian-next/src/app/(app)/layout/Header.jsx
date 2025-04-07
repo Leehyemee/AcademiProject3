@@ -82,7 +82,7 @@ const Header = () => {
         <nav className="navbar navbar-default navbar-fixed-top">
             <div className="brand">
                 <a href="/dashboard">
-                    <img src="/assets/img/academiLogo.jpg" alt="Logo" className="img-responsive logo" />
+                    <img src="/assets/img/academiLogo.jpg" alt="academi Logo" className="img-responsive logo" />
                 </a>
             </div>
             <div className="container-fluid">
