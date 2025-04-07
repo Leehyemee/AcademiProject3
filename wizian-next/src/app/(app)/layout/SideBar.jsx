@@ -65,7 +65,7 @@ const SideBar = () => {
                                 onClick={toggleSubMenu("post")}
                             >
                                 <i className="lnr lnr-pencil"></i>
-                                <span>내 게시글 관리</span>
+                                <span>게시판 관리</span>
                             </a>
 
                             <div id="subPages" className={`collapse ${collapsedMenus.post ? "" : "show"}`}>
