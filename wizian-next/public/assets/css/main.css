@@ -978,7 +978,7 @@ ul.activity-list > li {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
-  width: 650px; /*로그인 폼 너비*/
+  width: 450px; /*로그인 폼 너비*/
   height: auto;
   margin: 0 auto;
   background-color: #fff; }

@@ -1,15 +1,15 @@
 /*pageLogin css */
-.logo {
+.login-logo {
     margin-bottom: 50px;
 }
 
-.tab-buttons {
+.login-tab-buttons {
     display: flex;
     justify-content: center;
     margin-bottom: 1rem;
 }
 
-.tab-buttons button {
+.login-tab-buttons button {
     margin: 0 0.75rem;
     padding: 0.95rem 2rem;
     font-size: 1.8rem;
@@ -19,14 +19,14 @@
     transition: background-color 0.3s ease;
 }
 
-.tab-buttons button.active:hover {
+.login-tab-buttons button.tab-active:hover {
     background-color: #342462;
     color: white;
 }
 
-.tab-buttons button.active {
-    background-color: #342462;
-    color: white;
+.login-tab-buttons button.tab-active {
+    background-color: #342462 !important;
+    color: white !important;
     font-weight: bold;
 }
 
@@ -61,9 +61,148 @@
     color: #000000;
 }
 
-.S-signup {
+.signup-link {
     display: flex;
     justify-content: flex-end;
     color: #000000;
     font-weight: bold;
+}
+.login-box {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 40px;
+    box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.1);
+}
+.login-btn-wrap.student {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+.btn-signup {
+    background-color: #342462;
+    color: #ffffff;
+    font-weight: bold !important;
+    border: 2px solid #ffffff;
+    padding: 0.75rem 1.5rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-signup:hover {
+    background-color: #1f1544;
+    color: white !important;
+}
+
+.login-btn-wrap.teacher {
+    display: flex;
+    justify-content: center;
+}
+
+.sns-login-wrap {
+    display: flex;
+    justify-content: center; /* 버튼들을 가운데로 */
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.remember-signup-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-login,
+.btn-signup,
+.btn-kakao,
+.btn-google {
+    width: 200px;
+    text-align: center;
+}
+
+.helper-text {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    padding: 10px 10px;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+    .login-box {
+        padding: 30px 20px;
+    }
+
+    .login-tab-buttons button {
+        padding: 0.75rem 1.25rem;
+        font-size: 1.4rem;
+    }
+
+    .login-btn-wrap.student {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .login-btn-wrap.teacher {
+        justify-content: center;
+    }
+
+    .sns-login-wrap {
+        flex-direction: column;
+    }
+
+    .form-control {
+        font-size: 1rem;
+    }
+
+    .signup-link {
+        justify-content: center;
+        margin-top: 0.5rem;
+    }
+
+    .remember-signup-wrap {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-tab-buttons {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .login-tab-buttons button {
+        width: 100%;
+    }
+
+    .btn-login{
+        background-color: #342462;
+        color: white;
+        font-weight: bold !important;
+        padding: 0.75rem 1.5rem;
+    }
+
+    .btn-kakao,
+    .btn-google {
+        font-size: 1rem;
+        padding: 0.75rem;
+    }
+
+    .login-box {
+        box-shadow: none;
+        border-radius: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .btn-login,
+    .btn-signup,
+    .btn-kakao,
+    .btn-google {
+        width: 100%;
+    }
 }
