@@ -118,10 +118,11 @@ const SideBar = () => {
                         </li> */}
 
                         <li>
-                            <Link href="/tables">
-                                <i className="lnr lnr-dice"></i> <span>Tables</span>
+                            <Link href="/typography">
+                                <i className="lnr lnr-text-format"></i> <span>////</span>
                             </Link>
                         </li>
+
                         <li>
                             <Link href="/typography">
                                 <i className="lnr lnr-text-format"></i> <span>Typography</span>
