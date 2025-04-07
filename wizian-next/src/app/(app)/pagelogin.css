@@ -60,3 +60,10 @@
     background-color: #4366f4;
     color: #000000;
 }
+
+.S-signup {
+    display: flex;
+    justify-content: flex-end;
+    color: #000000;
+    font-weight: bold;
+}
