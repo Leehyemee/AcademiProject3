@@ -1,27 +1,57 @@
 "use client";
-import {useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
+import Swal from 'sweetalert2';
 
 //회원가입 처리
 const processJoinok = async (formValues) => {
-    fetch('http://localhost:8080/api/auth/join', {
-        method: 'POST',
-        headers: {
-            'content-type': 'application/json',
-        },
-        body: JSON.stringify(formValues)
-    }).then(async response => {
+
+    try {
+        console.log("fetch 요청 보냄! 데이터: ", formValues);
+
+        const response = await fetch('http://localhost:8080/api/auth/join', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+            },
+            body: JSON.stringify(formValues)
+        });
+
+        console.log("서버 응답 상태: ", response.status);
+
         if (response.ok) {
-            alert('회원가입 완료!!');
-            location.href="/login";
-        }else if(response.status === 400){
-            alert(await response.text());
-        }else{
-            alert('회원가입 실패!')
+            console.log("회원가입 성공! 응답 OK");
+            Swal.fire({
+                title: '회원가입 완료!',
+                text: '로그인 페이지로 이동합니다.',
+                icon: 'success',
+                confirmButtonText: '확인'
+            }).then(() => {
+                location.href = "/login";
+            });
+        } else if (response.status === 400) {
+            const errorText = await response.text();
+            console.log("400 에러 - 잘못된 입력: ", errorText);
+            Swal.fire({
+                title: '입력 오류',
+                text: errorText,
+                icon: 'error'
+            });
+        } else {
+            console.log("서버 오류 또는 예외 응답");
+            Swal.fire({
+                title: '회원가입 실패!',
+                text: '다시 시도해주세요.',
+                icon: 'error'
+            });
         }
-    }) .catch(error => {
-        console.error('join error', error);
-        alert('서버 오류! 관리자 문의')
-    });
+    } catch (error) {
+        console.error("서버 오류!:", error);
+        Swal.fire({
+            title: '서버 오류!',
+            text: '관리자에게 문의해주세요.',
+            icon: 'error'
+        });
+    }
 };
 
 const formatPhoneNumber = (value) => {
@@ -30,18 +60,6 @@ const formatPhoneNumber = (value) => {
     if (onlyNums.length <= 3) return onlyNums;
     if (onlyNums.length <= 7) return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3)}`;
     return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3, 7)}-${onlyNums.slice(7, 11)}`;
-};
-
-const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    // 전화번호만 포맷 적용
-    if (name === 'phone') {
-        const formatted = formatPhoneNumber(value);
-        setForm(prev => ({ ...prev, [name]: formatted }));
-    } else {
-        setForm(prev => ({ ...prev, [name]: value }));
-    }
 };
 
 const initialFormState = {
@@ -63,27 +81,38 @@ const Join = () => {
     const [errors, setErrors] = useState({});
     const[sitekey, setSitekey] = useState(null);
 
-    // 폼 재설정
+    useEffect(() => {
+        console.log("현재 선택된 성별:", form.gen_cd);
+    }, [form.gen_cd]);
+
     const handleReset = () => {
-        setForm(initialFormState);
-        setErrors({});
+        Swal.fire({
+            title: '정말 다시 작성하시겠어요?',
+            text: '입력한 모든 정보가 초기화됩니다.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '네',
+            cancelButtonText: '아니오'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                setForm(initialFormState);
+                setErrors({});
+                Swal.fire('초기화 완료!', '다시 작성해주세요!', 'success');
+            }
+        });
     };
 
-    const handleJoinSubmit = (e) => {
-        e.preventDefault();
+    const handleChange = (e) => {
+        const { name, value } = e.target;
 
-        const formData = new FormData(formJoinRef.current);
-        const formValues = Object.fromEntries(formData.entries());
-        console.log(">> join ", formValues["g-recaptcha-response"]);
-
-        const formErrors = validateJoinForm(formValues);
-
-        if(Object.keys(formErrors).length === 0){
-            console.log('회원 정보: ', formValues);
-            processJoinok(formValues);
-        }else {
-            setErrors(formErrors);
-            console.log("'오류 정보 : '", formErrors);
+        // 전화번호만 포맷 적용
+        if (name === 'phone') {
+            const formatted = formatPhoneNumber(value);
+            setForm(prev => ({ ...prev, [name]: formatted }));
+        } else {
+            setForm(prev => ({ ...prev, [name]: value }));
         }
     };
 
@@ -133,28 +162,37 @@ const Join = () => {
             formErrors.addr = "주소 검색 후 주소를 입력하세요!!";
         }
 
-        if (!values["g-recaptcha-response"]) {
-            formErrors.recaptcha = "자동가입방지를 확인하세요!!";
-        }
+        // if (!values["g-recaptcha-response"]) {
+        //     formErrors.recaptcha = "자동가입방지를 확인하세요!!";
+        // }
 
         return formErrors;
-    }
+    };
 
+    const handleJoinSubmit = (e) => {
+        e.preventDefault();
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        if (name === 'phone') {
-            const formatted = formatPhoneNumber(value);
-            setForm(prev => ({ ...prev, [name]: formatted }));
-        } else {
-            setForm(prev => ({ ...prev, [name]: value }));
+        const formData = new FormData(formJoinRef.current);
+        const formValues = form;
+        console.log(">> join ", formValues["g-recaptcha-response"]);
+
+        console.log("성별 값:", formValues.gen_cd);
+
+        const formErrors = validateJoinForm(formValues);
+
+        if(Object.keys(formErrors).length === 0){
+            console.log('회원 정보: ', formValues);
+            processJoinok(formValues);
+        }else {
+            setErrors(formErrors);
+            console.log("'오류 정보 : '", formErrors);
         }
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (form.pwd !== form.confirmPwd) {
+        if (form.pwd !== form.repwd) {
             alert("비밀번호가 일치하지 않습니다.");
             return;
         }
@@ -213,14 +251,20 @@ const Join = () => {
                                     <button
                                         type="button"
                                         className={`gender-btn ${form.gen_cd === "M" ? "active" : ""}`}
-                                        onClick={() => setForm(prev => ({ ...prev, gen_cd: "M" }))}
+                                        onClick={() => {
+                                            console.log("성별 선택됨:", "M");
+                                            setForm(prev => ({ ...prev, gen_cd: "M" }));
+                                        }}
                                     >
                                         남
                                     </button>
                                     <button
                                         type="button"
                                         className={`gender-btn ${form.gen_cd === "F" ? "active" : ""}`}
-                                        onClick={() => setForm(prev => ({ ...prev, gen_cd: "F" }))}
+                                        onClick={() => {
+                                            console.log("성별 선택됨:", "F");
+                                            setForm(prev => ({ ...prev, gen_cd: "F" }));
+                                        }}
                                     >
                                         여
                                     </button>
