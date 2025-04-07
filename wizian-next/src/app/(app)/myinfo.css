@@ -132,3 +132,55 @@ input {
 .search-address-btn:hover {
     background-color: #0056b3;
 }
+
+.gender-button-group {
+    display: flex;
+    gap: 1rem;
+}
+
+.gender-button {
+    padding: 0.5rem 1.5rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: white;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.gender-button.active-male {
+    background-color: #3b82f6; /* blue-500 */
+    color: white;
+    border-color: #3b82f6;
+}
+
+.gender-button.active-female {
+    background-color: #ec4899; /* pink-500 */
+    color: white;
+    border-color: #ec4899;
+}
+
+.gender-button:hover {
+    opacity: 0.9;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    row-gap: 12px;
+    column-gap: 16px;
+    font-size: 14px;
+    margin-top: 20px;
+}
+
+.info-grid div {
+    padding: 6px 0;
+}
+
+.gender-inline {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem; /* 기존 spacing 유지용 */
+}
+
