@@ -4,9 +4,9 @@
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
     padding: 40px;
     font-family: 'Noto Sans KR', sans-serif;
-    max-width: 600px; /* 카드 너비 */
-    margin: 50px auto; /* 가운데 정렬 */
-    text-align: left; /* 전체 왼쪽 정렬 */
+    max-width: 600px;
+    margin: 50px auto;
+    text-align: left;
 }
 
 .myinfo {
@@ -149,13 +149,13 @@ input {
 }
 
 .gender-button.active-male {
-    background-color: #3b82f6; /* blue-500 */
+    background-color: #3b82f6;
     color: white;
     border-color: #3b82f6;
 }
 
 .gender-button.active-female {
-    background-color: #ec4899; /* pink-500 */
+    background-color: #ec4899;
     color: white;
     border-color: #ec4899;
 }
@@ -181,6 +181,6 @@ input {
     display: flex;
     align-items: center;
     gap: 1rem;
-    margin-bottom: 1.25rem; /* 기존 spacing 유지용 */
+    margin-bottom: 1.25rem;
 }
 
