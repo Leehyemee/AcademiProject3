@@ -205,3 +205,8 @@
     border-radius: 1px;
     opacity: 0.8;
 }
+
+input::placeholder {
+    font-size: 0.95rem;
+    color: #999;
+}

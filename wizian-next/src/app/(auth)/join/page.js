@@ -163,8 +163,8 @@ const Join = () => {
 
         if (!values.stdnt_id) {
             formErrors.stdnt_id = "아이디를 입력하세요!!";
-        } else if (values.stdnt_id.length < 6) {
-            formErrors.stdnt_id = "아이디는 6자 이상이어야 합니다!!";
+        } else if (!/^(?=.*[a-z])(?=.*\d)[a-z\d]{6,}$/.test(values.stdnt_id)) {
+            formErrors.stdnt_id = "아이디는 영어 소문자와 숫자를 모두 포함한 6자 이상이어야 합니다!!";
         }
 
         if (!values.pwd) {
@@ -256,7 +256,8 @@ const Join = () => {
 
                             <div className="form-group">
                                 <label>이메일</label>
-                                <input name="stdnt_email" onChange={handleChange} value={form.stdnt_email} type="email" />
+                                <input name="stdnt_email" onChange={handleChange} value={form.stdnt_email} type="email"
+                                       placeholder='예) abc123@domain.com'/>
                                 {errors.stdnt_email && <p className="error-msg">{errors.stdnt_email}</p>}
                             </div>
 
@@ -309,13 +310,15 @@ const Join = () => {
 
                             <div className="form-group">
                                 <label>주소</label>
-                                <input name="addr" onChange={handleChange} value={form.addr} type="text" />
+                                <input name="addr" onChange={handleChange} value={form.addr} type="text"
+                                       placeholder='기본 주소' />
                                 {errors.addr && <p className="error-msg">{errors.addr}</p>}
                             </div>
 
                             <div className="form-group">
                                 <label>상세주소</label>
-                                <input name="addr_dtl" onChange={handleChange} value={form.addr_dtl} type="text" />
+                                <input name="addr_dtl" onChange={handleChange} value={form.addr_dtl} type="text"
+                                       placeholder='나머지 주소(선택입력 가능)' />
                             </div>
 
                             <div className="form-button-row">
