@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import "@/app/(app)/pagelogin.css"
+import "@/app/(app)/pagelogin.css";
 import Link from "next/link";
 
 const PageLogin = () => {
@@ -15,7 +15,7 @@ const PageLogin = () => {
                             <div className="logo mb-4">
                                 <img src="/assets/img/academiLogo_login.jpg" alt="academi Logo" />
                             </div>
-                            <div className="login-tab-buttons flex justify-center mb-4">
+                            <div className="login-tab-buttons">
                                 <button
                                     onClick={() => setActiveTab("student")}
                                     className={activeTab === "student" ? "tab-active" : "tab-inactive"}
@@ -32,7 +32,6 @@ const PageLogin = () => {
                         </div>
 
                         <form className="form-login" onSubmit={(e) => e.preventDefault()}>
-                            {/* 입력 필드 */}
                             <div className="form-group">
                                 <input
                                     type="email"
@@ -49,30 +48,25 @@ const PageLogin = () => {
                                     <input type="checkbox" />
                                     <span className="rem-text">기억하기</span>
                                 </label>
-
                             </div>
 
                             {activeTab === "student" ? (
-                                <>
-                                    <div className="login-btn-wrap student">
-                                        <button type="submit" className="btn btn-login">학생 로그인</button>
-                                        <Link href="/join">
-                                            <button type="button" className="btn btn-join">회원가입</button>
-                                        </Link>
-                                    </div>
-                                    <div className="sns-login-wrap">
-                                        <button type="button" className="btn btn-kakao">Kakao로 로그인</button>
-                                        <button type="button" className="btn btn-google">Google로 로그인</button>
-                                    </div>
-                                </>
+                                <div className="login-btn-grid">
+                                    <button type="button" className="btn-grid">학생 로그인</button>
+                                    <button type="button" className="btn-grid" onClick={() => window.location.href = '/join'}>
+                                        회원가입
+                                    </button>
+                                    <button type="button" className="btn-grid kakao">Kakao 로그인</button>
+                                    <button type="button" className="btn-grid google">Google 로그인</button>
+                                </div>
                             ) : (
-                                <div className="login-btn-wrap teacher">
-                                    <button type="submit" className="btn btn-login">강사 로그인</button>
+                                <div className="login-btn-center">
+                                    <button type="submit" className="btn-grid">강사 로그인</button>
                                 </div>
                             )}
 
                             <div className="bottom mt-2">
-                                <span className="helper-text"><i className="fa fa-lock"></i> <a href="#">&nbsp;비밀번호 찾기</a></span>
+                                <span className="helper-text"><i className="fa fa-lock"></i> <a href="#">비밀번호 찾기</a></span>
                             </div>
                         </form>
 
