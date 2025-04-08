@@ -232,10 +232,12 @@ const Join = () => {
                         </div>
 
                         <form ref={formJoinRef} onSubmit={handleJoinSubmit} noValidate>
-                            <div className="form-group">
+                            <div className="form-group address-group">
                                 <label>아이디</label>
-                                <input name="stdnt_id" onChange={handleChange} value={form.stdnt_id} type="text" />
-                                <button type="button" onClick={handleIdCheck}>중복 확인</button>
+                                <div className="zip-row">
+                                    <input name="stdnt_id" onChange={handleChange} value={form.stdnt_id} type="text" />
+                                    <button type="button" className="idbtn" onClick={handleIdCheck}>중복 확인</button>
+                                </div>
                                 {errors.stdnt_id && <p className="error-msg">{errors.stdnt_id}</p>}
                                 {!idAvailable && <p className="error-msg">이미 사용 중인 아이디입니다.</p>}
                             </div>
@@ -287,7 +289,7 @@ const Join = () => {
                                 <div className="zip-row">
                                     <input name="zip_cd" onChange={handleChange} value={form.zip_cd} type="text"
                                            placeholder="주소 검색 시 자동 입력됩니다." />
-                                    <button type="button" onClick={() => {
+                                    <button type="button" className="addrbtn" onClick={() => {
                                         new window.daum.Postcode({
                                             oncomplete: function (data) {
                                                 const fullAddress = data.address;
