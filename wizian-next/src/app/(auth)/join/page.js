@@ -98,6 +98,17 @@ const Join = () => {
     const [errors, setErrors] = useState({});
     const [idAvailable, setIdAvailable] = useState(true);
 
+    useEffect(() => {
+        const script = document.createElement("script");
+        script.src = "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
+        script.async = true;
+        document.body.appendChild(script);
+
+        return () => {
+            document.body.removeChild(script);
+        };
+    }, []);
+
     const handleReset = () => {
         Swal.fire({
             title: '정말 다시 작성하시겠어요?',
@@ -138,7 +149,6 @@ const Join = () => {
         const isAvailable = await checkIdAvailability(form.stdnt_id);
 
         if (isAvailable === null) {
-            // 서버 오류
             return;
         }
         setIdAvailable(isAvailable);
@@ -291,6 +301,11 @@ const Join = () => {
                                     <input name="zip_cd" onChange={handleChange} value={form.zip_cd} type="text"
                                            placeholder="주소 검색 시 자동 입력됩니다." />
                                     <button type="button" className="addrbtn" onClick={() => {
+                                        if (!window.daum || !window.daum.Postcode) {
+                                            Swal.fire("주소 검색 스크립트가 아직 로드되지 않았어요!", "", "warning");
+                                            return;
+                                        }
+
                                         new window.daum.Postcode({
                                             oncomplete: function (data) {
                                                 const fullAddress = data.address;

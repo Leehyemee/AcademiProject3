@@ -11,6 +11,7 @@ const SideBar = () => {
     const [collapsedMenus, setCollapsedMenus] = useState({
         post: true,
         course: true,
+        myinfo: true,
     });
 
     const toggleSubMenu = (menuKey) => (e) => {
@@ -71,21 +72,36 @@ const SideBar = () => {
                             <div id="subPages" className={`collapse ${collapsedMenus.post ? "" : "show"}`}>
                                 <ul className="nav">
                                     <li>
-                                        <Link href="/dashboard">강의게시판</Link>
+                                        <Link href="/board">강의게시판</Link>
                                     </li>
                                     <li>
                                         <Link href="/dashboard">Q&A</Link>
                                     </li>
                                 </ul>
                             </div>
-
                         </li>
 
 
                         <li>
-                            <Link href="/myinfo">
-                                <i className="lnr lnr-user"></i> <span>마이페이지</span>
-                            </Link>
+                            <a
+                                href="#myinfoSubMenu"
+                                className={`collapsed ${collapsedMenus.myinfo ? "" : "active"}`}
+                                onClick={toggleSubMenu("myinfo")}
+                            >
+                                <i className="lnr lnr-user"></i>
+                                <span>마이페이지</span>
+                            </a>
+
+                            <div id="subPages" className={`collapse ${collapsedMenus.myinfo ? "" : "show"}`}>
+                                <ul className="nav">
+                                    <li>
+                                        <Link href="/myinfo">회원 정보</Link>
+                                    </li>
+                                    <li>
+                                        <Link href="/dashboard">결제 정보</Link>
+                                    </li>
+                                </ul>
+                            </div>
                         </li>
 
 
@@ -117,17 +133,12 @@ const SideBar = () => {
                             </div>
                         </li> */}
 
-                        <li>
-                            <Link href="/typography">
-                                <i className="lnr lnr-text-format"></i> <span>////</span>
-                            </Link>
-                        </li>
 
-                        <li>
-                            <Link href="/typography">
-                                <i className="lnr lnr-text-format"></i> <span>Typography</span>
-                            </Link>
-                        </li>
+                        {/*<li>*/}
+                        {/*    <Link href="/typography">*/}
+                        {/*        <i className="lnr lnr-text-format"></i> <span>Typography</span>*/}
+                        {/*    </Link>*/}
+                        {/*</li>*/}
                         <li>
                             <Link href="/icons">
                                 <i className="lnr lnr-linearicons"></i> <span>Icons</span>
