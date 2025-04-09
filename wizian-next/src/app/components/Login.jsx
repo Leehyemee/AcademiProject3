@@ -83,8 +83,8 @@ const Login = () => {
                 </label>
             </div>
             <div className="login-btn-grid">
-                <button type="submit" className="btn-grid">학생 로그인</button>
                 <button type="button" className="btn-grid" onClick={() => location.href = "/join"}>회원가입</button>
+                <button type="submit" className="btn-grid">학생 로그인</button>
                 <button type="button" className="btn-grid kakao">Kakao 로그인</button>
                 <button type="button" className="btn-grid google">Google 로그인</button>
             </div>
