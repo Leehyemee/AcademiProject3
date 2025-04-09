@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import Breadcrumb from "../../components/Breadcrumb";
 import "@/app/(app)/myinfodeit.css";
@@ -12,28 +12,55 @@ const PageMyInfoEdit = () => {
         { label: "회원정보 수정", href: "/myinfoedit" },
     ];
 
-    const defaultUserData = {
-        stdnt_id: "student123",
-        pwd: "",
-        stdnt_nm: "홍길동",
-        stdnt_email: "",
-        gen_cd: "남성",
-        phone: "010-1234-5678",
-        zip_cd: "",
-        addr: "서울특별시 강남구",
-        addr_dtl: "123-45",
-        stdnt_regdate: "2024-01-15",
-    };
-
-    const [userData, setUserData] = useState(defaultUserData);
+    const [userData, setUserData] = useState(null);  // 초기값 null로 설정
     const [errors, setErrors] = useState({});
+
+    // useEffect로 백엔드에서 사용자 정보를 가져옵니다.
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const token = localStorage.getItem("accessToken");
+
+                if (!token) {
+                    location.href = "/member/login";
+                    return;
+                }
+
+                const response = await fetch("http://localhost:8080/api/auth/stdnt/myinfo", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    setUserData(data);  // 백엔드에서 받은 사용자 정보로 업데이트
+                } else {
+                    throw new Error("사용자 정보를 불러오지 못했습니다.");
+                }
+            } catch (error) {
+                console.error("서버 오류:", error);
+                Swal.fire({
+                    title: "서버 오류",
+                    text: "사용자 정보를 불러오는 데 실패했습니다.",
+                    icon: "error",
+                    confirmButtonText: "확인",
+                });
+                location.href = "/member/login";
+            }
+        };
+
+        fetchUserData();
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setUserData((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const formErrors = validateEditForm(userData);
         if (Object.keys(formErrors).length > 0) {
@@ -50,46 +77,74 @@ const PageMyInfoEdit = () => {
             reverseButtons: true,
         }).then((result) => {
             if (result.isConfirmed) {
+                updateUserInfo(userData);
+            }
+        });
+    };
+
+    const updateUserInfo = async (userData) => {
+        try {
+            const token = localStorage.getItem("accessToken");
+
+            if (!token) {
+                location.href = "/member/login";
+                return;
+            }
+
+            const response = await fetch("http://localhost:8080/api/auth/stdnt/update", {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify(userData),
+            });
+
+            if (response.ok) {
                 Swal.fire({
                     title: "변경 완료되었습니다!",
                     icon: "success",
                     confirmButtonText: "확인",
                 });
+            } else {
+                throw new Error("서버 오류: 정보를 수정할 수 없습니다.");
             }
-        });
+        } catch (error) {
+            console.error("서버 오류:", error);
+            Swal.fire({
+                title: "서버 오류",
+                text: "회원 정보를 수정하는 데 실패했습니다.",
+                icon: "error",
+                confirmButtonText: "확인",
+            });
+        }
     };
 
     const handleCancel = () => {
-        setUserData(defaultUserData);
+        setUserData(null);
         setErrors({});
     };
 
     const validateEditForm = (values) => {
         let formErrors = {};
 
-        if (!values.pwd) {
-            formErrors.pwd = "비밀번호를 입력하세요!!";
-        } else if (values.pwd.length < 6) {
+        // 비밀번호가 변경되었을 때만 검사
+        if (values.pwd && values.pwd.length < 6) {
             formErrors.pwd = "비밀번호는 6자 이상이어야 합니다!!";
         }
 
-        if (!values.stdnt_email) {
-            formErrors.stdnt_email = "이메일을 입력하세요!!";
-        } else if (!/\S+@\S+\.\S+/.test(values.stdnt_email)) {
+        // 이메일이 변경되었을 때만 검사
+        if (values.stdnt_email && !/\S+@\S+\.\S+/.test(values.stdnt_email)) {
             formErrors.stdnt_email = "유효한 이메일 주소를 입력하세요!!";
         }
 
-        if (!values.stdnt_nm) {
-            formErrors.stdnt_nm = "이름을 입력하세요!!";
-        }
-
-        if (!values.phone) {
-            formErrors.phone = "전화번호를 입력하세요!!";
-        } else if (!/^010-\d{4}-\d{4}$/.test(values.phone)) {
+        // 전화번호가 변경되었을 때만 검사
+        if (values.phone && !/^010-\d{4}-\d{4}$/.test(values.phone)) {
             formErrors.phone = "유효한 전화번호 형식이 아닙니다!!";
         }
 
-        if (!values.zip_cd || !values.addr) {
+        // 주소가 변경되었을 때만 검사
+        if (values.zip_cd && !values.addr) {
             formErrors.zip_cd = "주소 검색 후 우편번호를 입력하세요!!";
             formErrors.addr = "주소 검색 후 주소를 입력하세요!!";
         }
@@ -127,84 +182,76 @@ const PageMyInfoEdit = () => {
         }).open();
     };
 
+    if (!userData) {
+        return <div>로딩 중...</div>;
+    }
+
     return (
         <div>
             <Breadcrumb items={breadcrumbItems} />
 
             <div className="container mx-auto p-6 bg-white shadow rounded">
                 <h2 className="text-2xl font-bold mb-6 text-center myinfo">개인정보 수정</h2>
-                <form className="space-y-4 text-sm">
-                    <div>
-                        <label htmlFor="stdnt_id" className="font-semibold block mb-1">아이디:</label>
-                        <input id="stdnt_id" name="stdnt_id" className="w-full border px-3 py-2 rounded bg-gray-100" value={userData.stdnt_id} readOnly />
-                    </div>
 
-                    <div>
-                        <label>이름</label>
-                        <input name="stdnt_nm" onChange={handleChange} value={userData.stdnt_nm} type="text" />
-                        {errors.stdnt_nm && <p className="error-msg">{errors.stdnt_nm}</p>}
-                    </div>
-
-                    <div>
-                        <label>성별</label>
-                        <div className="gender-options">
-                            <button type="button" className={`gender-btn ${userData.gen_cd === "남성" ? "active" : ""}`}
-                                    onClick={() => setUserData((prev) => ({ ...prev, gen_cd: "남성" }))}>남</button>
-                            <button type="button" className={`gender-btn ${userData.gen_cd === "여성" ? "active" : ""}`}
-                                    onClick={() => setUserData((prev) => ({ ...prev, gen_cd: "여성" }))}>여</button>
+                {/* 변경 불가 항목 카드 */}
+                <div className="card-vertical-wrap">
+                    {/* 변경 불가 항목 카드 */}
+                    <div className="card">
+                        <h3 className="section-title">변경 불가 항목</h3>
+                        <div className="form-group">
+                            <label>아이디</label>
+                            <input type="text" value={userData.stdntId} readOnly />
+                        </div>
+                        <div className="form-group">
+                            <label>이름</label>
+                            <input type="text" value={userData.stdntNm} readOnly />
+                        </div>
+                        <div className="form-group">
+                            <label>성별</label>
+                            <input type="text" value={userData.genCd === "M" ? "남자" : "여자"} readOnly />
                         </div>
                     </div>
 
-                    <div>
-                        <label htmlFor="stdnt_regdate" className="font-semibold block mb-1">가입일:</label>
-                        <input id="stdnt_regdate" name="stdnt_regdate" className="w-full border px-3 py-2 rounded bg-gray-100" value={userData.stdnt_regdate} readOnly />
-                    </div>
-                </form>
+                    {/* 변경 가능한 항목 카드 */}
+                    <div className="card">
+                        <h3 className="section-title">변경 가능한 항목</h3>
+                        <form onSubmit={handleSubmit}>
 
-                <form onSubmit={handleSubmit} className="space-y-4 text-sm">
-                    <div>
-                        <label htmlFor="pwd" className="font-semibold block mb-1">비밀번호:</label>
-                        <input id="pwd" type="password" name="pwd" className="w-full border px-3 py-2 rounded" placeholder="비밀번호" value={userData.pwd} onChange={handleChange} />
-                        {errors.pwd && <p className="error-msg">{errors.pwd}</p>}
-                    </div>
+                            <div className="form-group">
+                                <label>비밀번호</label>
+                                <input type="password" name="pwd" value={userData.pwd || ''} onChange={handleChange} />
+                            </div>
+                            <div className="form-group">
+                                <label>이메일</label>
+                                <input type="email" name="stdntEmail" value={userData.stdntEmail} onChange={handleChange} />
+                            </div>
+                            <div className="form-group">
+                                <label>전화번호</label>
+                                <input type="text" name="phone" value={userData.phone} onChange={handleChange} />
+                            </div>
+                            <div className="form-group address-group">
+                                <label>우편번호</label>
+                                <div className="zip-row">
+                                    <input name="zipCd" value={userData.zipCd} onChange={handleChange} />
+                                    <button type="button" onClick={handleAddressSearch}>주소 검색</button>
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <label>주소</label>
+                                <input name="addr" value={userData.addr} onChange={handleChange} />
+                            </div>
+                            <div className="form-group">
+                                <label>상세주소</label>
+                                <input name="addrDtl" value={userData.addrDtl || ''} onChange={handleChange} />
+                            </div>
 
-                    <div>
-                        <label>이메일</label>
-                        <input name="stdnt_email" onChange={handleChange} value={userData.stdnt_email} type="email" placeholder="예) abc123@domain.com" />
-                        {errors.stdnt_email && <p className="error-msg">{errors.stdnt_email}</p>}
+                            <div className="form-button-row">
+                                <button type="button" className="btn-cansle" onClick={handleCancel}>취소</button>
+                                <button type="submit" className="btn-complate">수정 완료</button>
+                            </div>
+                        </form>
                     </div>
-
-                    <div>
-                        <label>전화번호</label>
-                        <input name="phone" onChange={handleChange} value={userData.phone} type="text" placeholder="예: 010-1234-5678" />
-                        {errors.phone && <p className="error-msg">{errors.phone}</p>}
-                    </div>
-
-                    <div>
-                        <label>우편번호</label>
-                        <div className="zip-row">
-                            <input name="zip_cd" onChange={handleChange} value={userData.zip_cd} type="text" placeholder="주소 검색 시 자동 입력됩니다." />
-                            <button type="button" className="addrbtn" onClick={handleAddressSearch}>주소 검색</button>
-                        </div>
-                        {errors.zip_cd && <p className="error-msg">{errors.zip_cd}</p>}
-                    </div>
-
-                    <div>
-                        <label>주소</label>
-                        <input name="addr" onChange={handleChange} value={userData.addr} type="text" placeholder="기본 주소" />
-                        {errors.addr && <p className="error-msg">{errors.addr}</p>}
-                    </div>
-
-                    <div>
-                        <label>상세주소</label>
-                        <input name="addr_dtl" onChange={handleChange} value={userData.addr_dtl} type="text" placeholder="나머지 주소(선택입력 가능)" />
-                    </div>
-
-                    <div className="flex justify-between mt-6">
-                        <button type="submit" className="btn-complate">수정 완료</button>
-                        <button type="button" onClick={handleCancel} className="btn-cansle">취소</button>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
     );
