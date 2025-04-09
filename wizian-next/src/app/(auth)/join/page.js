@@ -43,7 +43,9 @@ const processJoinok = async (formValues) => {
 
         if (response.ok) {
             Swal.fire({
-                title: '회원가입 완료!',
+                title: '회원가입 완료! ' +
+                    '가입 시 작성하신 메일로 인증메일 보내드렸습니다.' +
+                    '인증 완료 후 로그인 해주세요.',
                 text: '로그인 페이지로 이동합니다.',
                 icon: 'success',
                 confirmButtonText: '확인'
@@ -97,7 +99,7 @@ const Join = () => {
     const formJoinRef = useRef(null);
     const [form, setForm] = useState(initialFormState);
     const [errors, setErrors] = useState({});
-    const [idAvailable, setIdAvailable] = useState(true);
+    const [idAvailable, setIdAvailable] = useState(false);
     const [recaptchaToken, setRecaptchaToken] = useState("");
     const sitekey = process.env.NEXT_PUBLIC_RECAPTCHA_SITEKEY;
 
@@ -227,6 +229,16 @@ const Join = () => {
 
     const handleJoinSubmit = (e) => {
         e.preventDefault();
+
+        if (!idAvailable) {
+            Swal.fire({
+                title: '아이디 중복확인은 필수입니다!',
+                icon: 'warning',
+                confirmButtonText: '확인'
+            });
+            return;
+        }
+
         const formValues = {
             ...form,
             "gRecaptchaResponse": recaptchaToken
@@ -260,7 +272,6 @@ const Join = () => {
                                     <button type="button" className="idbtn" onClick={handleIdCheck}>중복 확인</button>
                                 </div>
                                 {errors.stdntId && <p className="error-msg">{errors.stdntId}</p>}
-                                {!idAvailable && <p className="error-msg">이미 사용 중인 아이디입니다.</p>}
                             </div>
 
                             <div className="form-group">
