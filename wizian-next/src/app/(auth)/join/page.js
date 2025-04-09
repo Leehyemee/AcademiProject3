@@ -1,11 +1,12 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import Swal from 'sweetalert2';
+import ReCAPTCHA from "react-google-recaptcha";
 
 // 아이디 중복 확인
 const checkIdAvailability = async (id) => {
     try {
-        const response = await fetch(`http://localhost:8080/api/auth/check-id?stdnt_id=${id}`, {
+        const response = await fetch(`http://localhost:8080/api/auth/stdnt/check-id?stdntId=${id}`, {
             method: 'GET',
             headers: {
                 'content-type': 'application/json',
@@ -32,7 +33,7 @@ const checkIdAvailability = async (id) => {
 // 회원가입 처리
 const processJoinok = async (formValues) => {
     try {
-        const response = await fetch('http://localhost:8080/api/auth/join', {
+        const response = await fetch('http://localhost:8080/api/auth/stdnt/signup', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json',
@@ -47,7 +48,7 @@ const processJoinok = async (formValues) => {
                 icon: 'success',
                 confirmButtonText: '확인'
             }).then(() => {
-                location.href = "/login";
+                location.href = "/pageLogin";
             });
         } else if (response.status === 400) {
             const errorText = await response.text();
@@ -80,16 +81,16 @@ const formatPhoneNumber = (value) => {
 };
 
 const initialFormState = {
-    stdnt_id: "",
+    stdntId: "",
     pwd: "",
     repwd: "",
-    stdnt_email: "",
-    stdnt_nm: "",
-    gen_cd: "",
+    stdntEmail: "",
+    stdntNm: "",
+    genCd: "",
     phone: "",
-    zip_cd: "",
+    zipCd: "",
     addr: "",
-    addr_dtl: ""
+    addrDtl: ""
 };
 
 const Join = () => {
@@ -97,6 +98,8 @@ const Join = () => {
     const [form, setForm] = useState(initialFormState);
     const [errors, setErrors] = useState({});
     const [idAvailable, setIdAvailable] = useState(true);
+    const [recaptchaToken, setRecaptchaToken] = useState("");
+    const sitekey = process.env.NEXT_PUBLIC_RECAPTCHA_SITEKEY;
 
     useEffect(() => {
         const script = document.createElement("script");
@@ -137,7 +140,7 @@ const Join = () => {
     };
 
     const handleIdCheck = async () => {
-        if (!form.stdnt_id) {
+        if (!form.stdntId) {
             Swal.fire({
                 title: '아이디를 입력해주세요.',
                 icon: 'warning',
@@ -146,7 +149,7 @@ const Join = () => {
             return;
         }
 
-        const isAvailable = await checkIdAvailability(form.stdnt_id);
+        const isAvailable = await checkIdAvailability(form.stdntId);
 
         if (isAvailable === null) {
             return;
@@ -155,7 +158,7 @@ const Join = () => {
 
         if (isAvailable) {
             Swal.fire({
-                title: '아이디가 사용 가능합니다.',
+                title: '사용 가능한 아이디입니다.',
                 icon: 'success',
                 confirmButtonText: '확인'
             });
@@ -171,10 +174,10 @@ const Join = () => {
     const validateJoinForm = (values) => {
         let formErrors = {};
 
-        if (!values.stdnt_id) {
-            formErrors.stdnt_id = "아이디를 입력하세요!!";
-        } else if (!/^(?=.*[a-z])(?=.*\d)[a-z\d]{6,}$/.test(values.stdnt_id)) {
-            formErrors.stdnt_id = "아이디는 영어 소문자와 숫자를 모두 포함한 6자 이상이어야 합니다!!";
+        if (!values.stdntId) {
+            formErrors.stdntId = "아이디를 입력하세요!!";
+        } else if (!/^(?=.*[a-z])(?=.*\d)[a-z\d]{6,}$/.test(values.stdntId)) {
+            formErrors.stdntId = "아이디는 영어 소문자와 숫자를 모두 포함한 6자 이상이어야 합니다!!";
         }
 
         if (!values.pwd) {
@@ -189,18 +192,18 @@ const Join = () => {
             formErrors.repwd = "비밀번호가 일치하지 않습니다!!";
         }
 
-        if (!values.stdnt_email) {
-            formErrors.stdnt_email = "이메일을 입력하세요!!";
-        } else if (!/\S+@\S+\.\S+/.test(values.stdnt_email)) {
-            formErrors.stdnt_email = "유효한 이메일 주소를 입력하세요!!";
+        if (!values.stdntEmail) {
+            formErrors.stdntEmail = "이메일을 입력하세요!!";
+        } else if (!/\S+@\S+\.\S+/.test(values.stdntEmail)) {
+            formErrors.stdntEmail = "유효한 이메일 주소를 입력하세요!!";
         }
 
-        if (!values.stdnt_nm) {
-            formErrors.stdnt_nm = "이름을 입력하세요!!";
+        if (!values.stdntNm) {
+            formErrors.stdntNm = "이름을 입력하세요!!";
         }
 
-        if (!values.gen_cd) {
-            formErrors.gen_cd = "성별을 선택하세요!!";
+        if (!values.genCd) {
+            formErrors.genCd = "성별을 선택하세요!!";
         }
 
         if (!values.phone) {
@@ -209,9 +212,14 @@ const Join = () => {
             formErrors.phone = "유효한 전화번호 형식이 아닙니다!!";
         }
 
-        if (!values.zip_cd || !values.addr) {
-            formErrors.zip_cd = "주소 검색 후 우편번호를 입력하세요!!";
+        if (!values.zipCd || !values.addr) {
+            formErrors.zipCd = "주소 검색 후 우편번호를 입력하세요!!";
             formErrors.addr = "주소 검색 후 주소를 입력하세요!!";
+        }
+
+        // 리캡챠 확인 검사
+        if (!values["gRecaptchaResponse"]) {
+            formErrors.recaptcha = "자동가입방지를 확인하세요!!";
         }
 
         return formErrors;
@@ -219,7 +227,10 @@ const Join = () => {
 
     const handleJoinSubmit = (e) => {
         e.preventDefault();
-        const formValues = form;
+        const formValues = {
+            ...form,
+            "gRecaptchaResponse": recaptchaToken
+        };
         const formErrors = validateJoinForm(formValues);
 
         if (Object.keys(formErrors).length === 0) {
@@ -245,10 +256,10 @@ const Join = () => {
                             <div className="form-group address-group">
                                 <label>아이디</label>
                                 <div className="zip-row">
-                                    <input name="stdnt_id" onChange={handleChange} value={form.stdnt_id} type="text" />
+                                    <input name="stdntId" onChange={handleChange} value={form.stdntId} type="text" />
                                     <button type="button" className="idbtn" onClick={handleIdCheck}>중복 확인</button>
                                 </div>
-                                {errors.stdnt_id && <p className="error-msg">{errors.stdnt_id}</p>}
+                                {errors.stdntId && <p className="error-msg">{errors.stdntId}</p>}
                                 {!idAvailable && <p className="error-msg">이미 사용 중인 아이디입니다.</p>}
                             </div>
 
@@ -266,26 +277,26 @@ const Join = () => {
 
                             <div className="form-group">
                                 <label>이메일</label>
-                                <input name="stdnt_email" onChange={handleChange} value={form.stdnt_email} type="email"
+                                <input name="stdntEmail" onChange={handleChange} value={form.stdntEmail} type="email"
                                        placeholder='예) abc123@domain.com'/>
-                                {errors.stdnt_email && <p className="error-msg">{errors.stdnt_email}</p>}
+                                {errors.stdntEmail && <p className="error-msg">{errors.stdntEmail}</p>}
                             </div>
 
                             <div className="form-group">
                                 <label>이름</label>
-                                <input name="stdnt_nm" onChange={handleChange} value={form.stdnt_nm} type="text" />
-                                {errors.stdnt_nm && <p className="error-msg">{errors.stdnt_nm}</p>}
+                                <input name="stdntNm" onChange={handleChange} value={form.stdntNm} type="text" />
+                                {errors.stdntNm && <p className="error-msg">{errors.stdntNm}</p>}
                             </div>
 
                             <div className="form-group gender-wrap">
                                 <label>성별</label>
                                 <div className="gender-options">
-                                    <button type="button" className={`gender-btn ${form.gen_cd === "M" ? "active" : ""}`}
-                                            onClick={() => setForm(prev => ({ ...prev, gen_cd: "M" }))}>남</button>
-                                    <button type="button" className={`gender-btn ${form.gen_cd === "F" ? "active" : ""}`}
-                                            onClick={() => setForm(prev => ({ ...prev, gen_cd: "F" }))}>여</button>
+                                    <button type="button" className={`gender-btn ${form.genCd === "M" ? "active" : ""}`}
+                                            onClick={() => setForm(prev => ({ ...prev, genCd: "M" }))}>남</button>
+                                    <button type="button" className={`gender-btn ${form.genCd === "F" ? "active" : ""}`}
+                                            onClick={() => setForm(prev => ({ ...prev, genCd: "F" }))}>여</button>
                                 </div>
-                                {errors.gen_cd && <p className="error-msg">{errors.gen_cd}</p>}
+                                {errors.genCd && <p className="error-msg">{errors.genCd}</p>}
                             </div>
 
                             <div className="form-group">
@@ -298,7 +309,7 @@ const Join = () => {
                             <div className="form-group address-group">
                                 <label>우편번호</label>
                                 <div className="zip-row">
-                                    <input name="zip_cd" onChange={handleChange} value={form.zip_cd} type="text"
+                                    <input name="zipCd" onChange={handleChange} value={form.zipCd} type="text"
                                            placeholder="주소 검색 시 자동 입력됩니다." />
                                     <button type="button" className="addrbtn" onClick={() => {
                                         if (!window.daum || !window.daum.Postcode) {
@@ -313,14 +324,14 @@ const Join = () => {
 
                                                 setForm(prev => ({
                                                     ...prev,
-                                                    zip_cd: zonecode,
+                                                    zipCd: zonecode,
                                                     addr: fullAddress
                                                 }));
                                             }
                                         }).open();
                                     }}>주소 검색</button>
                                 </div>
-                                {errors.zip_cd && <p className="error-msg">{errors.zip_cd}</p>}
+                                {errors.zipCd && <p className="error-msg">{errors.zipCd}</p>}
                             </div>
 
                             <div className="form-group">
@@ -332,8 +343,18 @@ const Join = () => {
 
                             <div className="form-group">
                                 <label>상세주소</label>
-                                <input name="addr_dtl" onChange={handleChange} value={form.addr_dtl} type="text"
+                                <input name="addrDtl" onChange={handleChange} value={form.addrDtl} type="text"
                                        placeholder='나머지 주소(선택입력 가능)' />
+                            </div>
+
+                            <div className="ReCAPTCHA">
+                                <ReCAPTCHA
+                                    sitekey={sitekey}
+                                    onChange={(token) => {
+                                        console.log("토큰 잘 받음:", token);
+                                        setRecaptchaToken(token)}}
+                                />
+                                {errors.recaptcha && <p className="error-msg">{errors.recaptcha}</p>}
                             </div>
 
                             <div className="form-button-row">

@@ -210,3 +210,8 @@ input::placeholder {
     font-size: 0.95rem;
     color: #999;
 }
+
+.ReCAPTCHA{
+    display: flex;
+    justify-content: center;
+}
