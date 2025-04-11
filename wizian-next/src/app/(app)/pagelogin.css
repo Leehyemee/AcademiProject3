@@ -86,25 +86,30 @@ html, body {
 
 /* 로그인 버튼 그리드 */
 .login-btn-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
 }
 
-/* 공통 버튼 */
+.btn-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+/* 일반 버튼 스타일 */
 .custom-btn {
-    height: 50px;
+    height: 48px;
     font-size: 1.4rem;
     font-weight: bold;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
-    width: 100%;
+    width: 200px;
 }
 
-/* hover/active 효과 */
 .custom-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
@@ -115,7 +120,7 @@ html, body {
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* 각 버튼 색상 */
+/* 일반 버튼 색상 */
 .join-btn {
     background-color: #342462;
     color: white;
@@ -126,22 +131,49 @@ html, body {
     color: white;
 }
 
-.kakao-btn {
-    background-color: #fee500;
-    color: #3a1d1d;
+/* 이미지 기반 SNS 버튼 */
+.btn-row {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
 }
 
-.kakao-btn:hover {
-    background-color: #e6c800;
+.sns-btn {
+    width: 200px;
+    height: 48px;
+    background-color: transparent;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 0;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sns-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+}
+
+.sns-btn img {
+    width: 100%;
+    height: 100%;
+
+    border-radius: 8px;
+}
+
+/* 각 SNS 버튼 배경 */
+.kakao-btn {
+    background-color: #fee500;
+    border-radius: 8px;
 }
 
 .google-btn {
-    background-color: #4285f4;
-    color: white;
-}
-
-.google-btn:hover {
-    background-color: #3367d6;
+    background-color: white;
+    border-radius: 8px;
 }
 
 /* 하단 헬퍼 링크 */
@@ -163,6 +195,30 @@ html, body {
 
 .helper-text a:hover {
     text-decoration: underline;
+}
+
+/* 체크박스 */
+.fancy-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.rem-text {
+    font-size: 0.95rem;
+    color: #555;
+}
+
+/* 강사 로그인 전용 버튼 */
+.login-btn-center {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5rem;
+}
+
+.login-btn-center .custom-btn {
+    width: 60%;
 }
 
 /* 애니메이션 */
@@ -210,44 +266,4 @@ html, body {
     .custom-btn {
         width: 100%;
     }
-}
-
-.remember-wrap-outer {
-    width: 100%;
-    display: flex;
-    justify-content: flex-start;
-    padding: 0;
-    margin: 0;
-    margin-top: 1rem;
-    margin-left: 25px;
-}
-
-.remember-wrap {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 0.5rem;
-}
-
-.fancy-checkbox {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
-}
-
-.rem-text {
-    font-size: 0.95rem;
-    color: #555;
-}
-
-/*강사로그인 버튼*/
-.login-btn-center {
-    display: flex;
-    justify-content: center;
-    margin-top: 1.5rem;
-}
-
-.login-btn-center .custom-btn {
-    width: 60%;
 }

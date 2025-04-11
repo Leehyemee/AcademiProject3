@@ -103,20 +103,20 @@ const Login = () => {
                 {errors.pwd && <p className="error-msg">{errors.pwd}</p>}
             </div>
 
-            <div className="remember-wrap-outer">
-                <div className="remember-wrap">
-                    <label className="fancy-checkbox">
-                        <input type="checkbox" />
-                        <span className="rem-text">기억하기</span>
-                    </label>
-                </div>
-            </div>
 
             <div className="login-btn-grid">
-                <button type="button" className="custom-btn join-btn full-width" onClick={() => location.href = "/join"}>회원가입</button>
-                <button type="submit" className="custom-btn login-btn full-width">학생 로그인</button>
-                <button type="button" className="custom-btn kakao-btn full-width">Kakao 로그인</button>
-                <button type="button" className="custom-btn google-btn full-width">Google 로그인</button>
+                <div className="btn-row">
+                    <button type="button" className="custom-btn join-btn" onClick={() => location.href = "/join"}>회원가입</button>
+                    <button type="submit" className="custom-btn login-btn">학생 로그인</button>
+                </div>
+                <div className="btn-row">
+                    <button type="button" className="sns-btn kakao-btn">
+                        <img src="/assets/img/kakao.png" alt="Kakao 로그인" />
+                    </button>
+                    <button type="button" className="sns-btn google-btn">
+                        <img src="/assets/img/google.png" alt="Google 로그인" />
+                    </button>
+                </div>
             </div>
         </form>
 

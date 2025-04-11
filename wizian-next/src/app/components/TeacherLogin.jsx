@@ -101,14 +101,6 @@ const TeacherLogin = () => {
                 {errors.pwd && <p className="error-msg">{errors.pwd}</p>}
             </div>
 
-            <div className="remember-wrap-outer">
-                <div className="remember-wrap">
-                    <label className="fancy-checkbox">
-                        <input type="checkbox" />
-                        <span className="rem-text">기억하기</span>
-                    </label>
-                </div>
-            </div>
 
             <div className="login-btn-center">
                 <button type="submit" className="custom-btn login-btn">강사 로그인</button>
