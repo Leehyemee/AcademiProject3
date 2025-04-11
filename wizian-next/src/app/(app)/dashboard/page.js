@@ -2,15 +2,17 @@
 
 import Image from "next/image";
 import styles from "../../page.module.css";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 
 export default function Home() {
+  const fetchURL = 'http://localhost:8080/api/dashboard';
   const [tasks, setTasks] = useState([
     { id: 1, title: "투두 리스트", description: "있으면 좋긴 할듯", date: "Oct 9, 2016", completed: false },
     { id: 2, title: "사용여부", description: "Compellingly implement clicks-and-mortar relationships without highly efficient metrics.", date: "Oct 23, 2016", completed: false },
     { id: 3, title: "재고좀여", description: "Monotonectally formulate client-focused core competencies after parallel web-readiness.", date: "Oct 11, 2016", completed: false }
   ]);
 
+  const [stdntInfo, setStdntInfo] = useState(null);
   // 패널 상태 관리
   const [panels, setPanels] = useState({
     overview: { visible: true, collapsed: false },
@@ -22,6 +24,32 @@ export default function Home() {
     visits: { visible: true, collapsed: false },
     system: { visible: true, collapsed: false }
   });
+
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    const headers = {};
+    headers['Content-Type'] = `application/json`;
+    headers['Accept'] = `application/json`;
+    // 토큰이 존재하면 인증 헤더에 토큰을 설정하고
+    if (token != null) headers['Authorization'] = `Bearer ${token}`
+    // 토큰이 없으면 로그인 페이지로 이동
+    else location.href="/pageLogin";
+
+
+    fetch(fetchURL, {
+      headers: headers
+    }).then(res => res.json())
+        .then(data => {
+          console.log(data);
+          setStdntInfo(data);
+
+        })
+        .catch(err => {
+          console.log(stdntInfo);
+          console.log('오류발생!! ', err);
+          location.href="/pageLogin";
+        });
+  }, []);
 
   // 체크박스 토글
   const toggleTask = (id) => {

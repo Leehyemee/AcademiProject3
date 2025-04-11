@@ -7,12 +7,12 @@ import "@/app/(app)/myinfodeit.css";
 const PageMyInfoEdit = () => {
     const breadcrumbItems = [
         { label: "대시보드", href: "/dashboard" },
-        { label: "마이페이지", href: "/myinfo" },
+        { label: "마이페이지" },
         { label: "회원정보", href: "/myinfo" },
         { label: "회원정보 수정", href: "/myinfoedit" },
     ];
 
-    const [userData, setUserData] = useState(null);  // 초기값 null로 설정
+    const [userData, setUserData] = useState(null);
     const [errors, setErrors] = useState({});
 
     // useEffect로 백엔드에서 사용자 정보를 가져옵니다.
@@ -22,7 +22,7 @@ const PageMyInfoEdit = () => {
                 const token = localStorage.getItem("accessToken");
 
                 if (!token) {
-                    location.href = "/member/login";
+                    location.href = "/pageLogin";
                     return;
                 }
 
@@ -36,7 +36,7 @@ const PageMyInfoEdit = () => {
 
                 if (response.ok) {
                     const data = await response.json();
-                    setUserData(data);  // 백엔드에서 받은 사용자 정보로 업데이트
+                    setUserData({ ...data, newPwd: "" });
                 } else {
                     throw new Error("사용자 정보를 불러오지 못했습니다.");
                 }
@@ -48,7 +48,7 @@ const PageMyInfoEdit = () => {
                     icon: "error",
                     confirmButtonText: "확인",
                 });
-                location.href = "/member/login";
+                location.href = "/pageLogin";
             }
         };
 
@@ -87,8 +87,13 @@ const PageMyInfoEdit = () => {
             const token = localStorage.getItem("accessToken");
 
             if (!token) {
-                location.href = "/member/login";
+                location.href = "/PageLogin";
                 return;
+            }
+
+            const updatedData = { ...userData };
+            if (!updatedData.newPwd) {
+                delete updatedData.newPwd;
             }
 
             const response = await fetch("http://localhost:8080/api/auth/stdnt/update", {
@@ -97,14 +102,17 @@ const PageMyInfoEdit = () => {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify(userData),
+                body: JSON.stringify(updatedData),
             });
 
             if (response.ok) {
                 Swal.fire({
                     title: "변경 완료되었습니다!",
+                    text: "회원정보 화면으로 이동합니다.",
                     icon: "success",
                     confirmButtonText: "확인",
+                }).then(() => {
+                    location.href = "/myinfo";
                 });
             } else {
                 throw new Error("서버 오류: 정보를 수정할 수 없습니다.");
@@ -121,16 +129,15 @@ const PageMyInfoEdit = () => {
     };
 
     const handleCancel = () => {
-        setUserData(null);
-        setErrors({});
+        location.href = "/myinfo";
     };
 
     const validateEditForm = (values) => {
         let formErrors = {};
 
         // 비밀번호가 변경되었을 때만 검사
-        if (values.pwd && values.pwd.length < 6) {
-            formErrors.pwd = "비밀번호는 6자 이상이어야 합니다!!";
+        if (values.newPwd && values.newPwd.length < 6) {
+            formErrors.newPwd = "비밀번호는 6자 이상이어야 합니다!!";
         }
 
         // 이메일이 변경되었을 때만 검사
@@ -197,7 +204,7 @@ const PageMyInfoEdit = () => {
                 <div className="card-vertical-wrap">
                     {/* 변경 불가 항목 카드 */}
                     <div className="card">
-                        <h3 className="section-title">변경 불가 항목</h3>
+                        <h3 className="section-title">수정 불가 항목</h3>
                         <div className="form-group">
                             <label>아이디</label>
                             <input type="text" value={userData.stdntId} readOnly />
@@ -214,12 +221,15 @@ const PageMyInfoEdit = () => {
 
                     {/* 변경 가능한 항목 카드 */}
                     <div className="card">
-                        <h3 className="section-title">변경 가능한 항목</h3>
+                        <h3 className="section-title">수정 가능한 항목</h3>
                         <form onSubmit={handleSubmit}>
 
                             <div className="form-group">
                                 <label>비밀번호</label>
-                                <input type="password" name="pwd" value={userData.pwd || ''} onChange={handleChange} />
+                                <input type="password" name="newPwd" value={userData.newPwd || ''}
+                                       onChange={(e) => setUserData({ ...userData, newPwd: e.target.value })}
+                                       placeholder="비밀번호 입력 (변경하지 않으려면 비워두세요)"/>
+                                <span className="hint-text">(변경하시려면 새 비밀번호 입력, 공백이면 기존 비밀번호 유지)</span>
                             </div>
                             <div className="form-group">
                                 <label>이메일</label>

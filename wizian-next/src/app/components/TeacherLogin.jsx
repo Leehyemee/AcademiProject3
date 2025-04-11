@@ -1,14 +1,15 @@
 "use client";
 import { useRef, useState } from "react";
 import Swal from "sweetalert2";
+import "@/app/(app)/pagelogin.css";
 
-const Login = () => {
+const TeacherLogin = () => {
     const formLoginRef = useRef(null);
     const [errors, setErrors] = useState({});
 
     const processLoginok = async (values) => {
         try {
-            const response = await fetch("http://localhost:8080/api/auth/stdnt/signin", {
+            const response = await fetch("http://localhost:8080/api/auth/teacher/signin", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(values),
@@ -20,11 +21,11 @@ const Login = () => {
                     localStorage.setItem("accessToken", data.accessToken);
                     Swal.fire({
                         title: '로그인 성공!!',
-                        text: '대시보드로 이동합니다.',
+                        text: '강사 대시보드로 이동합니다.',
                         icon: 'success',
                         confirmButtonText: '확인',
                     }).then(() => {
-                        location.href = "/dashboard";
+                        location.href = "/teacher/dashboard";
                     });
                 } else {
                     Swal.fire({
@@ -32,8 +33,6 @@ const Login = () => {
                         text: '문제가 발생했습니다.',
                         icon: 'error',
                         confirmButtonText: '확인',
-                    }).then(() => {
-                        location.href = "/pageLogin";
                     });
                 }
             } else if (response.status === 401) {
@@ -63,7 +62,6 @@ const Login = () => {
 
         const formErrors = validateLoginForm(formValues);
         if (Object.keys(formErrors).length === 0) {
-            console.log("formValues 확인:", formValues);
             processLoginok(formValues);
         } else {
             setErrors(formErrors);
@@ -72,8 +70,8 @@ const Login = () => {
 
     const validateLoginForm = (values) => {
         const errors = {};
-        if (!values.stdntId || values.stdntId.length < 6) {
-            errors.stdntId = "아이디는 6자 이상 입력하세요!";
+        if (!values.teacherId || values.teacherId.length < 6) {
+            errors.teacherId = "아이디는 6자 이상 입력하세요!";
         }
         if (!values.pwd || values.pwd.length < 6) {
             errors.pwd = "비밀번호는 6자 이상 입력하세요!";
@@ -86,11 +84,11 @@ const Login = () => {
             <div className="form-group">
                 <input
                     type="text"
-                    name="stdntId"
+                    name="teacherId"
                     className="form-control"
-                    placeholder="학생 아이디"
+                    placeholder="강사 아이디"
                 />
-                {errors.stdntId && <p className="error-msg">{errors.stdntId}</p>}
+                {errors.teacherId && <p className="error-msg">{errors.teacherId}</p>}
             </div>
 
             <div className="form-group">
@@ -112,15 +110,11 @@ const Login = () => {
                 </div>
             </div>
 
-            <div className="login-btn-grid">
-                <button type="button" className="custom-btn join-btn full-width" onClick={() => location.href = "/join"}>회원가입</button>
-                <button type="submit" className="custom-btn login-btn full-width">학생 로그인</button>
-                <button type="button" className="custom-btn kakao-btn full-width">Kakao 로그인</button>
-                <button type="button" className="custom-btn google-btn full-width">Google 로그인</button>
+            <div className="login-btn-center">
+                <button type="submit" className="custom-btn login-btn">강사 로그인</button>
             </div>
         </form>
-
     );
 };
 
-export default Login;
+export default TeacherLogin;
