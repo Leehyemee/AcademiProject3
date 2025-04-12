@@ -46,13 +46,16 @@ const SideBar = () => {
                             <div id="subPages" className={`collapse ${collapsedMenus.course ? "" : "show"}`}>
                                 <ul className="nav">
                                     <li>
-                                        <Link href="/dashboard">수강중인 과정</Link>
+                                        <Link href="/dashboard">수강 신청</Link>
                                     </li>
                                     <li>
-                                        <Link href="/dashboard">완료 과정</Link>
+                                        <Link href="/dashboard">과제 관리</Link>
                                     </li>
                                     <li>
-                                        <Link href="/dashboard">수료증 발급</Link>
+                                        <Link href="/dashboard">설문 관리</Link>
+                                    </li>
+                                    <li>
+                                        <Link href="/dashboard">내 강의 정보</Link>
                                     </li>
                                 </ul>
                             </div>
@@ -97,9 +100,7 @@ const SideBar = () => {
                                     <li>
                                         <Link href="/myinfo">회원 정보</Link>
                                     </li>
-                                    <li>
-                                        <Link href="/dashboard">결제 정보</Link>
-                                    </li>
+
                                 </ul>
                             </div>
                         </li>

@@ -193,3 +193,56 @@ input {
 }
 
 
+/* 반응형 - 모바일 화면 대응 */
+@media (max-width: 640px) {
+    .container {
+        padding: 20px;
+        margin: 20px auto;
+        max-width: 90%;
+    }
+
+    .myinfo {
+        font-size: 22px;
+        margin-bottom: 20px;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr; /* 한 줄로 변경 */
+        row-gap: 10px;
+    }
+
+    .info-grid div {
+        padding: 4px 0;
+        font-size: 13px;
+    }
+
+    .flex {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .btn-complate, .btn-cansle {
+        width: 100%;
+        padding: 12px;
+        font-size: 15px;
+    }
+
+    .address-row {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .address-input {
+        max-width: 100%;
+    }
+
+    .search-address-btn {
+        width: 100%;
+    }
+
+    .breadcrumb {
+        padding-left: 0;
+        font-size: 13px;
+        text-align: center;
+    }
+}

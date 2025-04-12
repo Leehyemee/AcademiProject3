@@ -1,108 +1,99 @@
 'use client';
 
-import Image from "next/image";
-import styles from "../../page.module.css";
-import {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 
 export default function Home() {
-  const fetchURL = 'http://localhost:8080/api/dashboard';
-  const [tasks, setTasks] = useState([
-    { id: 1, title: "투두 리스트", description: "있으면 좋긴 할듯", date: "Oct 9, 2016", completed: false },
-    { id: 2, title: "사용여부", description: "Compellingly implement clicks-and-mortar relationships without highly efficient metrics.", date: "Oct 23, 2016", completed: false },
-    { id: 3, title: "재고좀여", description: "Monotonectally formulate client-focused core competencies after parallel web-readiness.", date: "Oct 11, 2016", completed: false }
-  ]);
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
   const [stdntInfo, setStdntInfo] = useState(null);
-  // 패널 상태 관리
+  const [isTokenReady, setIsTokenReady] = useState(false);
+
+  const [tasks, setTasks] = useState([
+    { id: 1, title: "투두 리스트", description: "있으면 좋긴 할듯", date: "Oct 9, 2016", completed: false },
+    { id: 2, title: "사용여부", description: "Compellingly implement metrics.", date: "Oct 23, 2016", completed: false },
+    { id: 3, title: "재고좀여", description: "Formulate core competencies.", date: "Oct 11, 2016", completed: false }
+  ]);
+
   const [panels, setPanels] = useState({
-    overview: { visible: true, collapsed: false },
-    purchases: { visible: true, collapsed: false },
-    multiCharts: { visible: true, collapsed: false },
     todo: { visible: true, collapsed: false },
-    timeline: { visible: true, collapsed: false },
-    tasks: { visible: true, collapsed: false },
-    visits: { visible: true, collapsed: false },
-    system: { visible: true, collapsed: false }
   });
 
+  // 토큰 저장 및 준비 상태 설정
   useEffect(() => {
+    const token = searchParams.get("token");
+    if (token) {
+      localStorage.setItem("accessToken", token);
+      setIsTokenReady(true);
+    } else {
+      const localToken = localStorage.getItem("accessToken");
+      if (localToken) {
+        setIsTokenReady(true);
+      } else {
+        router.replace("/pageLogin");
+      }
+    }
+  }, [searchParams]);
+
+  // 사용자 정보 가져오기
+  useEffect(() => {
+    if (!isTokenReady) return;
+
     const token = localStorage.getItem("accessToken");
-    const headers = {};
-    headers['Content-Type'] = `application/json`;
-    headers['Accept'] = `application/json`;
-    // 토큰이 존재하면 인증 헤더에 토큰을 설정하고
-    if (token != null) headers['Authorization'] = `Bearer ${token}`
-    // 토큰이 없으면 로그인 페이지로 이동
-    else location.href="/pageLogin";
-
-
-    fetch(fetchURL, {
-      headers: headers
-    }).then(res => res.json())
-        .then(data => {
-          console.log(data);
-          setStdntInfo(data);
-
-        })
-        .catch(err => {
-          console.log(stdntInfo);
-          console.log('오류발생!! ', err);
-          location.href="/pageLogin";
+    const fetchUser = async () => {
+      try {
+        const res = await fetch("http://localhost:8080/api/auth/stdnt/myinfo", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
-  }, []);
 
-  // 체크박스 토글
+        if (res.ok) {
+          const data = await res.json();
+          setStdntInfo(data);
+        } else {
+          router.replace("/pageLogin");
+        }
+      } catch (error) {
+        console.error("사용자 정보 불러오기 실패:", error);
+        router.replace("/pageLogin");
+      }
+    };
+
+    fetchUser();
+  }, [isTokenReady]);
+
   const toggleTask = (id) => {
     setTasks(tasks.map(task =>
         task.id === id ? { ...task, completed: !task.completed } : task
     ));
   };
 
-  // 패널 제거 핸들러
-  const handleRemovePanel = (panelKey) => {
-    setPanels(prev => ({
-      ...prev,
-      [panelKey]: { ...prev[panelKey], visible: false }
-    }));
+  const handleRemovePanel = (key) => {
+    setPanels(prev => ({ ...prev, [key]: { ...prev[key], visible: false } }));
   };
 
-  // 패널 접기/펼치기 핸들러
-  const handleToggleCollapse = (panelKey) => {
-    setPanels(prev => ({
-      ...prev,
-      [panelKey]: { ...prev[panelKey], collapsed: !prev[panelKey].collapsed }
-    }));
+  const handleToggleCollapse = (key) => {
+    setPanels(prev => ({ ...prev, [key]: { ...prev[key], collapsed: !prev[key].collapsed } }));
   };
 
   return (
       <div className="main-content">
         <div className="container-fluid">
-          {/* OVERVIEW */}
-
-
-          <div className="row">
-            <div className="col-md-6">
-              {/* RECENT PURCHASES */}
-
-            </div>
-            <div className="col-md-6">
-              {/* MULTI CHARTS */}
-
-            </div>
-          </div>
+          <h2>안녕하세요, {stdntInfo?.stdntNm || "회원"}님!</h2>
 
           <div className="row">
             <div className="col-md-7">
-              {/* TODO LIST */}
               {panels.todo.visible && (
                   <div className="panel">
                     <div className="panel-heading">
                       <h3 className="panel-title">To-Do List</h3>
                       <div className="right">
-                        <button type="button" className="btn-toggle-collapse" onClick={() => handleToggleCollapse('todo')}>
+                        <button type="button" onClick={() => handleToggleCollapse('todo')}>
                           <i className={`lnr ${panels.todo.collapsed ? 'lnr-chevron-down' : 'lnr-chevron-up'}`}></i>
                         </button>
-                        <button type="button" className="btn-remove" onClick={() => handleRemovePanel('todo')}>
+                        <button type="button" onClick={() => handleRemovePanel('todo')}>
                           <i className="lnr lnr-cross"></i>
                         </button>
                       </div>
@@ -135,7 +126,6 @@ export default function Home() {
                   </div>
               )}
             </div>
-
           </div>
         </div>
       </div>

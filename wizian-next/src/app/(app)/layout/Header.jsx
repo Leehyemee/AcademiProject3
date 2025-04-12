@@ -15,35 +15,38 @@ const Header = () => {
             if (width < 1025) {
                 setIsOffcanvasActive(true);
                 document.body.classList.add('offcanvas-active');
+            } else {
+                document.body.classList.add('layout-default'); // 초기 레이아웃 설정
             }
         }
     }, []);
 
     const handleToggleFullWidth = () => {
         const body = document.body;
-        setIsFullWidth(prev => {
-            const newState = !prev;
-            if (newState) {
-                body.classList.add('layout-fullwidth');
-            } else {
-                body.classList.remove('layout-fullwidth');
-                body.classList.remove('layout-default');
-            }
+        const isCurrentlyFullWidth = body.classList.contains("layout-fullwidth");
 
-            if (window.innerWidth < 1025) {
-                setIsOffcanvasActive(prevActive => {
-                    const toggled = !prevActive;
-                    if (toggled) {
-                        body.classList.add('offcanvas-active');
-                    } else {
-                        body.classList.remove('offcanvas-active');
-                    }
-                    return toggled;
-                });
-            }
+        if (isCurrentlyFullWidth) {
+            body.classList.remove("layout-fullwidth");
+            body.classList.add("layout-default");
+        } else {
+            body.classList.add("layout-fullwidth");
+            body.classList.remove("layout-default");
+        }
 
-            return newState;
-        });
+        // 모바일: 오프캔버스 처리
+        if (window.innerWidth < 1025) {
+            setIsOffcanvasActive((prev) => {
+                const toggled = !prev;
+                if (toggled) {
+                    body.classList.add("offcanvas-active");
+                } else {
+                    body.classList.remove("offcanvas-active");
+                }
+                return toggled;
+            });
+        }
+
+        setIsFullWidth(!isCurrentlyFullWidth); // 아이콘 전환용 state 업데이트
     };
 
     const handleLogout = () => {
@@ -56,9 +59,22 @@ const Header = () => {
             reverseButtons: true,
         }).then((result) => {
             if (result.isConfirmed) {
+                const loginType = localStorage.getItem("loginType");
+                const clientId = process.env.NEXT_PUBLIC_KAKAO_API_KEY;
+
                 localStorage.removeItem("accessToken");
+                localStorage.removeItem("loginType");
                 localStorage.removeItem("_grecaptcha");
-                location.href = "/";
+                localStorage.removeItem("kakao");
+
+                if (loginType === "kakao") {
+                    const logoutUrl = `https://accounts.kakao.com/logout?continue=` +
+                        `https://kauth.kakao.com/oauth/logout?client_id=${clientId}` +
+                        `&logout_redirect_uri=http://localhost:3000/pageLogin`;
+                    window.location.href = logoutUrl;
+                } else {
+                    router.push("/pageLogin");
+                }
             }
         });
     };

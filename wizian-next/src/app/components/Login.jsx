@@ -1,11 +1,13 @@
 "use client";
 import { useRef, useState } from "react";
 import Swal from "sweetalert2";
+import KakaoLogin from "./KakaoLogin";
 
 const Login = () => {
     const formLoginRef = useRef(null);
     const [errors, setErrors] = useState({});
 
+    // 일반 로그인 처리
     const processLoginok = async (values) => {
         try {
             const response = await fetch("http://localhost:8080/api/auth/stdnt/signin", {
@@ -56,6 +58,7 @@ const Login = () => {
         }
     };
 
+    // 로그인 폼 제출 처리
     const handleLoginSubmit = (e) => {
         e.preventDefault();
         const formData = new FormData(formLoginRef.current);
@@ -63,13 +66,13 @@ const Login = () => {
 
         const formErrors = validateLoginForm(formValues);
         if (Object.keys(formErrors).length === 0) {
-            console.log("formValues 확인:", formValues);
             processLoginok(formValues);
         } else {
             setErrors(formErrors);
         }
     };
 
+    // 폼 유효성 검사
     const validateLoginForm = (values) => {
         const errors = {};
         if (!values.stdntId || values.stdntId.length < 6) {
@@ -103,23 +106,33 @@ const Login = () => {
                 {errors.pwd && <p className="error-msg">{errors.pwd}</p>}
             </div>
 
-
             <div className="login-btn-grid">
                 <div className="btn-row">
-                    <button type="button" className="custom-btn join-btn" onClick={() => location.href = "/join"}>회원가입</button>
-                    <button type="submit" className="custom-btn login-btn">학생 로그인</button>
-                </div>
-                <div className="btn-row">
-                    <button type="button" className="sns-btn kakao-btn">
-                        <img src="/assets/img/kakao.png" alt="Kakao 로그인" />
+                    <button
+                        type="button"
+                        className="custom-btn join-btn"
+                        onClick={() => location.href = "/join"}
+                    >
+                        회원가입
                     </button>
+                    <button
+                        type="submit"
+                        className="custom-btn login-btn"
+                    >
+                        학생 로그인
+                    </button>
+                </div>
+
+                <div className="btn-row">
+                    <KakaoLogin />
+
+                    {/* ✅ 구글 로그인(비워둠) */}
                     <button type="button" className="sns-btn google-btn">
                         <img src="/assets/img/google.png" alt="Google 로그인" />
                     </button>
                 </div>
             </div>
         </form>
-
     );
 };
 
