@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-import Breadcrumb from '../../components/Breadcrumb';
-import MyinfoInfoGrid from '@/app/components/MyinfoInfoGrid';
+import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
+import MyinfoInfoGrid from '@/app/components/Myinfo/MyinfoInfoGrid';
 import useFetchMyinfo from '@/app/hooks/useFetchMyinfo';
 import '@/app/(app)/myinfo.css';
 

@@ -2,9 +2,9 @@
 
 import React from "react";
 import Swal from "sweetalert2";
-import Breadcrumb from "../../components/Breadcrumb";
+import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
 import useEditMyInfo from "@/app/hooks/useEditMyInfo";
-import MyInfoEditForm from "@/app/components/MyInfoEditForm";
+import MyInfoEditForm from "@/app/components/Myinfo/MyInfoEditForm";
 import "@/app/(app)/myinfodeit.css";
 
 const PageMyInfoEdit = () => {
