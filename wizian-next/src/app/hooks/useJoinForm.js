@@ -69,7 +69,7 @@ const Join = () => {
     const [recaptchaToken, setRecaptchaToken] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const sitekey = process.env.NEXT_PUBLIC_RECAPTCHA_SITEKEY;
-    const recaptchaRef = useRef(null);
+    const recaptchaRef = useRef(null);  // ReCAPTCHA ref 추가
 
     useEffect(() => {
         const script = document.createElement("script");
@@ -90,6 +90,10 @@ const Join = () => {
                 setForm(initialFormState);
                 setErrors({});
                 setRecaptchaToken("");
+                if (recaptchaRef.current) {
+                    recaptchaRef.current.reset();  // 리셋 호출을 보장
+                    console.log("ReCAPTCHA reset triggered");
+                }
                 Swal.fire('초기화 완료!', '다시 작성해주세요!', 'success');
             }
         });
@@ -153,7 +157,7 @@ const Join = () => {
             setIsLoading(true);
             processJoinok(values, setIsLoading);
             recaptchaRef.current?.reset();  // 리캡챠 리셋
-            setRecaptchaToken("");  // recaptchaToken 초기화
+            setRecaptchaToken("");
         } else {
             setErrors(validationErrors);
         }
@@ -205,84 +209,49 @@ const Join = () => {
 
                         <div className="form-group">
                             <label>이메일</label>
-                            <input name="stdntEmail" onChange={handleChange} value={form.stdntEmail} type="email" placeholder='예) abc123@domain.com' />
+                            <input name="stdntEmail" onChange={handleChange} value={form.stdntEmail} type="email" />
                             {errors.stdntEmail && <p className="error-msg">{errors.stdntEmail}</p>}
                         </div>
 
                         <div className="form-group">
-                            <label>이름</label>
-                            <input name="stdntNm" onChange={handleChange} value={form.stdntNm} type="text" />
-                            {errors.stdntNm && <p className="error-msg">{errors.stdntNm}</p>}
-                        </div>
-
-                        <div className="form-group gender-wrap">
                             <label>성별</label>
-                            <div className="gender-options">
-                                <button type="button" className={`gender-btn ${form.genCd === "M" ? "active" : ""}`} onClick={() => handleChange({ target: { name: 'genCd', value: 'M' } })}>남</button>
-                                <button type="button" className={`gender-btn ${form.genCd === "F" ? "active" : ""}`} onClick={() => handleChange({ target: { name: 'genCd', value: 'F' } })}>여</button>
-                            </div>
+                            <select name="genCd" value={form.genCd} onChange={handleChange}>
+                                <option value="">성별을 선택해주세요</option>
+                                <option value="M">남성</option>
+                                <option value="F">여성</option>
+                            </select>
                             {errors.genCd && <p className="error-msg">{errors.genCd}</p>}
                         </div>
 
                         <div className="form-group">
                             <label>전화번호</label>
-                            <input name="phone" value={form.phone} onChange={handleChange} placeholder="'-' 없이 숫자만 입력" />
+                            <input name="phone" onChange={handleChange} value={form.phone} type="text" maxLength="13" />
                             {errors.phone && <p className="error-msg">{errors.phone}</p>}
-                        </div>
-
-                        <div className="form-group address-group">
-                            <label>우편번호</label>
-                            <div className="zip-row">
-                                <input name="zipCd" onChange={handleChange} value={form.zipCd} type="text" placeholder="주소 검색 시 자동 입력됩니다." />
-                                <button type="button" className="addrbtn" onClick={() => {
-                                    if (!window.daum || !window.daum.Postcode) {
-                                        Swal.fire("주소 검색 스크립트가 아직 로드되지 않았어요!", "", "warning");
-                                        return;
-                                    }
-                                    new window.daum.Postcode({
-                                        oncomplete: function (data) {
-                                            const fullAddress = data.address;
-                                            const zonecode = data.zonecode;
-                                            handleChange({ target: { name: 'zipCd', value: zonecode } });
-                                            handleChange({ target: { name: 'addr', value: fullAddress } });
-                                        }
-                                    }).open();
-                                }}>주소 검색</button>
-                            </div>
-                            {errors.zipCd && <p className="error-msg">{errors.zipCd}</p>}
                         </div>
 
                         <div className="form-group">
                             <label>주소</label>
-                            <input name="addr" onChange={handleChange} value={form.addr} type="text" placeholder='기본 주소' />
+                            <input name="addr" onChange={handleChange} value={form.addr} type="text" />
                             {errors.addr && <p className="error-msg">{errors.addr}</p>}
                         </div>
 
                         <div className="form-group">
                             <label>상세주소</label>
-                            <input name="addrDtl" onChange={handleChange} value={form.addrDtl} type="text" placeholder='나머지 주소(선택입력 가능)' />
+                            <input name="addrDtl" onChange={handleChange} value={form.addrDtl} type="text" />
                         </div>
 
-                        <div className="ReCAPTCHA">
+                        <div className="form-group recaptcha">
                             <ReCAPTCHA
                                 sitekey={sitekey}
-                                onChange={(token) => {
-                                    setRecaptchaToken(token);
-                                    if (errors.recaptcha) {
-                                        setErrors(prev => {
-                                            const updated = { ...prev };
-                                            delete updated.recaptcha;
-                                            return updated;
-                                        });
-                                    }
-                                }}
+                                onChange={(value) => setRecaptchaToken(value)}
+                                ref={recaptchaRef}
                             />
                             {errors.recaptcha && <p className="error-msg">{errors.recaptcha}</p>}
                         </div>
 
-                        <div className="form-button-row">
-                            <button type="button" className="btn btn-reset" onClick={handleReset}>다시 작성</button>
-                            <button type="submit" className="btn btn-login">회원가입</button>
+                        <div className="btn-area">
+                            <button type="button" onClick={handleReset} className="reset">다시 작성</button>
+                            <button type="submit" className="joinbtn">회원가입</button>
                         </div>
                     </form>
                 </div>
