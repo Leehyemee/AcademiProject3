@@ -1,53 +1,13 @@
 'use client';
 
-import React, { useState, useEffect } from "react";
-import { useRouter } from 'next/navigation';
+import React from "react";
 import Swal from "sweetalert2";
+import { useHeaderLayout } from "./useHeaderLayout";
+import { useLogout } from "@/app/components/useLogout";
 
 const Header = () => {
-    const [isFullWidth, setIsFullWidth] = useState(false);
-    const [isOffcanvasActive, setIsOffcanvasActive] = useState(false);
-    const router = useRouter();
-
-    useEffect(() => {
-        if (typeof window !== "undefined") {
-            const width = window.innerWidth;
-            if (width < 1025) {
-                setIsOffcanvasActive(true);
-                document.body.classList.add('offcanvas-active');
-            } else {
-                document.body.classList.add('layout-default'); // 초기 레이아웃 설정
-            }
-        }
-    }, []);
-
-    const handleToggleFullWidth = () => {
-        const body = document.body;
-        const isCurrentlyFullWidth = body.classList.contains("layout-fullwidth");
-
-        if (isCurrentlyFullWidth) {
-            body.classList.remove("layout-fullwidth");
-            body.classList.add("layout-default");
-        } else {
-            body.classList.add("layout-fullwidth");
-            body.classList.remove("layout-default");
-        }
-
-        // 모바일: 오프캔버스 처리
-        if (window.innerWidth < 1025) {
-            setIsOffcanvasActive((prev) => {
-                const toggled = !prev;
-                if (toggled) {
-                    body.classList.add("offcanvas-active");
-                } else {
-                    body.classList.remove("offcanvas-active");
-                }
-                return toggled;
-            });
-        }
-
-        setIsFullWidth(!isCurrentlyFullWidth); // 아이콘 전환용 state 업데이트
-    };
+    const { isFullWidth, handleToggleFullWidth } = useHeaderLayout();
+    const logout = useLogout();
 
     const handleLogout = () => {
         Swal.fire({
@@ -59,34 +19,7 @@ const Header = () => {
             reverseButtons: true,
         }).then((result) => {
             if (result.isConfirmed) {
-                const loginType = localStorage.getItem("loginType");
-                const kakaoClientId = process.env.NEXT_PUBLIC_KAKAO_API_KEY;
-
-                // 로컬 스토리지 정리
-                localStorage.removeItem("accessToken");
-                localStorage.removeItem("loginType");
-                localStorage.removeItem("_grecaptcha");
-                localStorage.removeItem("kakao");
-
-                if (loginType === "kakao") {
-                    // 카카오 로그아웃
-                    const kakaoLogoutUrl =
-                        `https://accounts.kakao.com/logout?continue=` +
-                        `https://kauth.kakao.com/oauth/logout?client_id=${kakaoClientId}` +
-                        `&logout_redirect_uri=http://localhost:3000/pageLogin`;
-                    window.location.href = kakaoLogoutUrl;
-
-                } else if (loginType === "google") {
-                    // 구글 세션 로그아웃까지 포함
-                    const googleLogoutUrl =
-                        "https://accounts.google.com/Logout?continue=" +
-                        "https://appengine.google.com/_ah/logout?continue=http://localhost:3000/pageLogin";
-                    window.location.href = googleLogoutUrl;
-
-                } else {
-                    // 일반 로그인
-                    router.push("/pageLogin");
-                }
+                logout();
             }
         });
     };
