@@ -1,6 +1,6 @@
 "use client";
-import Login from "../Login";
-import TeacherLogin from "../TeacherLogin";
+import Login from "./Login";
+import TeacherLogin from "./TeacherLogin";
 import LoginTabButtons from "./LoginTabButtons";
 import LoginBottomHelper from "./LoginBottomHelper";
 

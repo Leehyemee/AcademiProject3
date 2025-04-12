@@ -1,8 +1,8 @@
 "use client";
 import { useRef, useState } from "react";
 import Swal from "sweetalert2";
-import KakaoLogin from "./KakaoLogin";
-import GoogleLogin from "./GoogleLogin";
+import KakaoLogin from "@/app/components/SocialLogin/KakaoLogin";
+import GoogleLogin from "@/app/components/SocialLogin/GoogleLogin";
 
 const Login = () => {
     const formLoginRef = useRef(null);
