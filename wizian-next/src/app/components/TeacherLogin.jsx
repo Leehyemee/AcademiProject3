@@ -1,7 +1,7 @@
 "use client";
 import { useRef, useState } from "react";
 import Swal from "sweetalert2";
-import "@/app/(app)/pagelogin.css";
+import "@/app/components/LoginPage/pagelogin.css";
 
 const TeacherLogin = () => {
     const formLoginRef = useRef(null);
