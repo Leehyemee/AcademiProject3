@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 
-// 이메일 마스킹 함수
 const maskEmail = (email) => {
     if (!email) {
         return '';
@@ -19,7 +18,7 @@ const ForgotPwdForm = ({
                            step, userId, setUserId, verificationCode, setVerificationCode,
                            newPwd, setNewPwd, handleStep1Submit, handleStep2Submit, handleStep3Submit, loading, email
                        }) => {
-    const maskedEmail = maskEmail(email); // 마스킹된 이메일 주소
+    const maskedEmail = maskEmail(email);
 
     return (
         <div className="login-page-wrap">
@@ -50,7 +49,7 @@ const ForgotPwdForm = ({
                     {step === 2 && (
                         <form onSubmit={handleStep2Submit}>
                             <p>가입 시 사용하신 이메일로 인증 코드를 보냈습니다.</p>
-                            <p>이메일: <strong>{maskedEmail}</strong></p> {/* 마스킹된 이메일 표시 */}
+                            <p>이메일: <strong>{maskedEmail}</strong></p>
                             <input
                                 type="text"
                                 className="form-control mb-3"
