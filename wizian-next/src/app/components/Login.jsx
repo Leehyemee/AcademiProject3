@@ -2,6 +2,7 @@
 import { useRef, useState } from "react";
 import Swal from "sweetalert2";
 import KakaoLogin from "./KakaoLogin";
+import GoogleLogin from "./GoogleLogin";
 
 const Login = () => {
     const formLoginRef = useRef(null);
@@ -125,11 +126,7 @@ const Login = () => {
 
                 <div className="btn-row">
                     <KakaoLogin />
-
-                    {/* ✅ 구글 로그인(비워둠) */}
-                    <button type="button" className="sns-btn google-btn">
-                        <img src="/assets/img/google.png" alt="Google 로그인" />
-                    </button>
+                    <GoogleLogin />
                 </div>
             </div>
         </form>

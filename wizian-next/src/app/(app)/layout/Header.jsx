@@ -60,19 +60,31 @@ const Header = () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 const loginType = localStorage.getItem("loginType");
-                const clientId = process.env.NEXT_PUBLIC_KAKAO_API_KEY;
+                const kakaoClientId = process.env.NEXT_PUBLIC_KAKAO_API_KEY;
 
+                // 로컬 스토리지 정리
                 localStorage.removeItem("accessToken");
                 localStorage.removeItem("loginType");
                 localStorage.removeItem("_grecaptcha");
                 localStorage.removeItem("kakao");
 
                 if (loginType === "kakao") {
-                    const logoutUrl = `https://accounts.kakao.com/logout?continue=` +
-                        `https://kauth.kakao.com/oauth/logout?client_id=${clientId}` +
+                    // 카카오 로그아웃
+                    const kakaoLogoutUrl =
+                        `https://accounts.kakao.com/logout?continue=` +
+                        `https://kauth.kakao.com/oauth/logout?client_id=${kakaoClientId}` +
                         `&logout_redirect_uri=http://localhost:3000/pageLogin`;
-                    window.location.href = logoutUrl;
+                    window.location.href = kakaoLogoutUrl;
+
+                } else if (loginType === "google") {
+                    // 구글 세션 로그아웃까지 포함
+                    const googleLogoutUrl =
+                        "https://accounts.google.com/Logout?continue=" +
+                        "https://appengine.google.com/_ah/logout?continue=http://localhost:3000/pageLogin";
+                    window.location.href = googleLogoutUrl;
+
                 } else {
+                    // 일반 로그인
                     router.push("/pageLogin");
                 }
             }
