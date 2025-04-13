@@ -37,10 +37,10 @@ const KakaoOAuthHandler = () => {
             localStorage.setItem("accessToken", token);
             localStorage.setItem("kakao", true); // 카카오 로그인 설정
             alert('로그인 성공!!');
-            navigate("/member/kakaoMyinfo", { replace: true });
+            navigate("/myinfo", { replace: true });
         } catch (error) {
             console.error(`카카오 로그인 실패:`, error);
-            navigate("/member/login", {replace: true});
+            navigate("/pageLogin", {replace: true});
         }
 
     };
