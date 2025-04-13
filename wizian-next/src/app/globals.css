@@ -372,3 +372,32 @@ input::placeholder {
     font-size: 1.2rem;
 }
 
+/* sidebar.css */
+/* 기본 상태 사이드바 */
+.sidebar {
+    width: 250px;
+    transition: width 0.3s ease;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 9999;
+}
+
+/* 사이드바 접혔을 때 */
+.sidebar.collapsed {
+    width: 0;
+    overflow: hidden;
+}
+
+.sidebar .nav {
+    visibility: visible;
+    transition: visibility 0.3s ease, opacity 0.3s ease;
+}
+
+.sidebar.collapsed .nav {
+    visibility: hidden;
+    opacity: 0;
+}
+
+

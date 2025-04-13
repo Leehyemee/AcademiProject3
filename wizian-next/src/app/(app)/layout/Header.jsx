@@ -4,9 +4,11 @@ import React from "react";
 import Swal from "sweetalert2";
 import { useHeaderLayout } from "./useHeaderLayout";
 import { useLogout } from "@/app/components/useLogout";
+import useSidebarMenu from "./useSidebarMenu";
 
 const Header = () => {
     const { isFullWidth, handleToggleFullWidth } = useHeaderLayout();
+    const { isSidebarCollapsed, toggleSidebar } = useSidebarMenu();
     const logout = useLogout();
 
     const handleLogout = () => {
@@ -24,6 +26,10 @@ const Header = () => {
         });
     };
 
+    const handleToggleSidebar = () => {
+        toggleSidebar();
+    };
+
     return (
         <nav className="navbar navbar-default navbar-fixed-top">
             <div className="brand">
@@ -34,8 +40,8 @@ const Header = () => {
 
             <div className="container-fluid">
                 <div className="navbar-btn">
-                    <button className="btn-toggle-fullwidth" onClick={handleToggleFullWidth}>
-                        <i className={`lnr ${isFullWidth ? 'lnr-arrow-right-circle' : 'lnr-arrow-left-circle'}`}></i>
+                    <button className="btn-toggle-sidebar" onClick={toggleSidebar}>
+                        <i className={`lnr ${isSidebarCollapsed ? 'lnr-arrow-right-circle' : 'lnr-arrow-left-circle'}`}></i>
                     </button>
                 </div>
 

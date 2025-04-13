@@ -5,12 +5,14 @@ import Link from "next/link";
 import useSidebarMenu from "./useSidebarMenu";
 import SidebarMenuGroup from "./SidebarMenuGroup";
 
-
 const SideBar = () => {
-    const { collapsedMenus, toggleSubMenu } = useSidebarMenu();
+    const { collapsedMenus, toggleSubMenu, isSidebarCollapsed } = useSidebarMenu();
 
     return (
-        <div id="sidebar-nav" className="sidebar">
+        <div
+            id="sidebar-nav"
+            className={`sidebar ${isSidebarCollapsed ? "collapsed" : ""}`} // collapsed 클래스 적용
+        >
             <div className="sidebar-scroll">
                 <nav>
                     <ul className="nav">
@@ -27,7 +29,7 @@ const SideBar = () => {
                             isCollapsed={collapsedMenus.course}
                             onToggle={toggleSubMenu("course")}
                             links={[
-                                { href: "/dashboard", label: "수강 신청" },
+                                { href: "/lect_apply", label: "수강 신청" },
                                 { href: "/dashboard", label: "과제 관리" },
                                 { href: "/dashboard", label: "설문 관리" },
                                 { href: "/dashboard", label: "내 강의 정보" },
