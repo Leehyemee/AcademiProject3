@@ -1,0 +1,152 @@
+.lecture-container {
+    padding: 20px;
+    width: 100%;
+    height: 100%;
+}
+
+.lecture-title {
+    font-size: 24px;
+    margin-bottom: 16px;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.content {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.all_th {
+    background-color: #d9deee;
+    width: 120px;
+}
+
+.lecture-table,
+.detail-table {
+    width: 100%;
+    border-collapse: collapse;
+
+}
+
+.lecture-table th,
+.lecture-table td,
+.detail-table th,
+.detail-table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+.lecture-table th {
+    background-color: #d6def0;
+}
+
+.inst-name {
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.apply-button {
+    background-color: #28a745;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.apply-button:hover {
+    background-color: #218838;
+}
+
+/* 모달 오버레이 */
+.modal-overlay {
+    display: flex !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    width: 100vw;
+    height: 100vh;
+    transition: opacity 0.3s ease-in-out;
+    opacity: 0;
+}
+
+.modal-overlay.show {
+    display: flex;
+    opacity: 1;
+}
+
+/* 모달 본문 */
+.modal {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    width: 400px;
+    max-width: 90%;
+    height: 400px;
+    text-align: center;
+    z-index: 10000;
+    margin: auto;
+    box-sizing: border-box;
+    position: relative;
+    display: flex !important;
+    flex-direction: column; /* 세로로 정렬 */
+    justify-content: center; /* 내용 세로로 중앙 정렬 */
+    align-items: center; /* 가로로 중앙 정렬 */
+}
+
+.modal h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-weight: 600;
+    color: #333;
+}
+
+.modal p {
+    font-size: 16px;
+    margin-bottom: 12px;
+    color: #555;
+}
+
+.modal button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.modal button:hover {
+    background-color: #0056b3;
+}
+
+.inst {
+    font-size: 18px;
+    margin-top: 20px;
+    color: #696b6e;
+}
+
+/* 카드 스타일 */
+.card {
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    padding: 24px;
+    margin-bottom: 50px;
+}
+
+.breadcrumb-list{
+    margin-bottom: 20px !important;
+}
