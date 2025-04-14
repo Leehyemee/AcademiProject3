@@ -10,15 +10,14 @@ const breadcrumbItems = [
     { label: '수강관리' },
     { label: '수강신청', href: '/lect_apply' },
 ];
+
 const formatDate = (dateString) => {
     const date = new Date(dateString);
-
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     const day = date.getDate();
     const hours = date.getHours();
     const minutes = date.getMinutes();
-
     return `${year}년 ${month}월 ${day}일 ${hours}시 ${minutes < 10 ? '0' + minutes : minutes}분`;
 };
 
@@ -29,7 +28,12 @@ export default function LectureApplyPage() {
     useEffect(() => {
         const fetchLectures = async () => {
             try {
-                const response = await fetch('http://localhost:8080/api/auth/lect/check');
+                const accessToken = localStorage.getItem('accessToken');
+                const response = await fetch('http://localhost:8080/api/auth/lect/check', {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                    },
+                });
                 const data = await response.json();
                 setLectures(data);
             } catch (error) {
@@ -43,14 +47,19 @@ export default function LectureApplyPage() {
     const handleDetailClick = (lecture) => setSelectedLecture(lecture);
 
     const handleApply = async (lecture) => {
+        if (lecture.applied) {
+            await Swal.fire('신청 불가', '이미 신청하신 강의입니다!', 'warning');
+            return;
+        }
+
         const accessToken = localStorage.getItem('accessToken');
         if (!accessToken) {
-            await Swal.fire('로그인 상태 확인', '로그인 후 수강신청을 하세요!', 'warning');
+            await Swal.fire('로그인 필요', '로그인 후 수강신청을 해주세요.', 'warning');
             return;
         }
 
         const result = await Swal.fire({
-            title: '해당 강의를 수강하시겠습니까?',
+            title: '수강 신청하시겠습니까?',
             text: `강의명: ${lecture.lectNm}`,
             icon: 'question',
             showCancelButton: true,
@@ -60,34 +69,30 @@ export default function LectureApplyPage() {
 
         if (result.isConfirmed) {
             try {
-                // 토큰 디코딩 확인 (선택)
-                try {
-                    const decodedToken = jwt_decode(accessToken);
-                    console.log('디코딩된 토큰:', decodedToken);
-                } catch (e) {
-                    console.error('accessToken이 유효하지 않습니다:', e);
-                    await Swal.fire('토큰 오류', '유효하지 않은 accessToken입니다.', 'error');
-                    return;
-                }
-
                 const response = await fetch(`http://localhost:8080/api/auth/lect/apply/${lecture.lectNo}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${accessToken}`
+                        'Authorization': `Bearer ${accessToken}`,
                     },
                 });
 
                 if (response.ok) {
-                    await Swal.fire('신청 완료!', `"${lecture.lectNm}" 수강 신청이 성공적으로 완료되었습니다.`, 'success');
+                    await Swal.fire('신청 완료!', `"${lecture.lectNm}" 수강 신청이 완료되었습니다.`, 'success');
+                    // 상태 업데이트: 해당 강의 applied = true로
+                    setLectures(prev =>
+                        prev.map(l => l.lectNo === lecture.lectNo ? { ...l, applied: true } : l)
+                    );
+                } else if (response.status === 409) {
+                    const errorText = await response.text();
+                    await Swal.fire('이미 신청한 강의입니다!', errorText, 'info');
                 } else {
                     const errorText = await response.text();
-                    console.error('서버 응답 오류:', errorText);
-                    await Swal.fire('오류 발생', errorText || '신청 처리 중 문제가 발생했습니다.', 'error');
+                    await Swal.fire('오류 발생', errorText || '알 수 없는 오류입니다.', 'error');
                 }
             } catch (error) {
-                console.error('수강신청 요청 실패:', error);
-                await Swal.fire('요청 실패', '서버에 연결할 수 없습니다.', 'error');
+                console.error('신청 요청 실패:', error);
+                await Swal.fire('요청 실패', '서버와 연결할 수 없습니다.', 'error');
             }
         }
     };
@@ -128,7 +133,13 @@ export default function LectureApplyPage() {
                                 <button onClick={() => handleDetailClick(lect)}>상세보기</button>
                             </td>
                             <td>
-                                <button className="apply-button" onClick={() => handleApply(lect)}>수강 신청</button>
+                                <button
+                                    className={`apply-button ${lect.applied ? 'applied' : ''}`}
+                                    onClick={() => handleApply(lect)}
+                                    disabled={lect.applied}
+                                >
+                                    {lect.applied ? '신청 완료' : '수강 신청'}
+                                </button>
                             </td>
                         </tr>
                     ))}
@@ -137,8 +148,11 @@ export default function LectureApplyPage() {
             </div>
 
             {selectedLecture && (
-                <div className="card">
-                    <h2 className="content">강의 상세 정보</h2>
+                <div className="card lecture-detail-card">
+                    <div className="card-header">
+                        <h2 className="content">강의 상세 정보</h2>
+                        <button className="close-detail-button" onClick={() => setSelectedLecture(null)}>X</button>
+                    </div>
                     <table className="detail-table">
                         <tbody className="semi_tit">
                         <tr><th className="all_th">강의명</th><td>{selectedLecture.lectNm}</td></tr>
