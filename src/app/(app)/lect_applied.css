@@ -147,6 +147,73 @@
     margin-bottom: 50px;
 }
 
-.breadcrumb-list{
-    margin-bottom: 20px !important;
+.no-lectures-msg {
+    font-size: 18px;
+    color: #666;
+    text-align: center;
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    border: 1px solid #ddd;
 }
+
+.lecture-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.lecture-table-container {
+    overflow-x: auto;
+}
+
+/* 헤더 셀 */
+.lecture-table th {
+    background-color: #f5f7fa;
+    color: #333;
+    padding: 14px 16px;
+    font-weight: 600;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* 바디 셀 */
+.lecture-table td {
+    padding: 14px 16px;
+    color: #444;
+    background-color: white;
+    border-bottom: 1px solid #f0f0f0;
+}
+.lecture-table th {
+    background-color: #d9deee;
+    font-weight: bold;
+}
+
+.cancel-button {
+    background-color: #f44336;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.cancel-button:hover {
+    background-color: #d32f2f;
+}
+
+.lecture-title {
+    font-size: 24px;
+    margin-bottom: 25px;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+
+
+
+

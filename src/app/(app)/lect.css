@@ -1,12 +1,14 @@
+/* 기본 컨테이너 */
 .lecture-container {
     padding: 20px;
     width: 100%;
-    height: 100%;
+    height: 150%;
 }
 
+/* 제목 */
 .lecture-title {
     font-size: 24px;
-    margin-bottom: 16px;
+    margin-bottom: 25px;
     margin-top: 10px;
     font-weight: bold;
 }
@@ -18,31 +20,47 @@
     margin-bottom: 20px;
 }
 
-.all_th {
-    background-color: #d9deee;
-    width: 120px;
-}
-
+/* 테이블 기본 설정 */
 .lecture-table,
 .detail-table {
     width: 100%;
-    border-collapse: collapse;
-
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
+/* 테이블 헤더 */
 .lecture-table th,
-.lecture-table td,
-.detail-table th,
-.detail-table td {
-    border: 1px solid #ccc;
-    padding: 8px;
+.detail-table th {
+    background-color: #d9deee;
+    font-weight: bold;
+    color: #333;
+    padding: 14px 16px;
+    border-bottom: 1px solid #e0e0e0;
     text-align: left;
 }
 
-.lecture-table th {
-    background-color: #d6def0;
+/* 테이블 바디 셀 */
+.lecture-table td,
+.detail-table td {
+    padding: 14px 16px;
+    color: #444;
+    background-color: #fff;
+    border-bottom: 1px solid #f0f0f0;
+    text-align: left;
 }
 
+/* 상세 테이블 첫 컬럼 스타일 */
+.all_th {
+    background-color: #d9deee;
+    width: 120px;
+    font-weight: bold;
+}
+
+/* 강사 이름 링크 */
 .inst-name {
     color: #007bff;
     cursor: pointer;
@@ -50,8 +68,9 @@
     font-weight: bold;
 }
 
+/* 수강신청 버튼 */
 .apply-button {
-    background-color: #28a745;
+    background-color: #007bff;
     color: white;
     padding: 6px 12px;
     border: none;
@@ -59,8 +78,16 @@
     cursor: pointer;
 }
 
+/* 버튼 호버 */
 .apply-button:hover {
-    background-color: #218838;
+    background-color: #0056b3;
+}
+
+/* 신청 완료 시 버튼 */
+.apply-button.applied {
+    background-color: #6c757d;
+    cursor: not-allowed;
+    opacity: 0.8;
 }
 
 /* 모달 오버레이 */
@@ -100,9 +127,9 @@
     box-sizing: border-box;
     position: relative;
     display: flex !important;
-    flex-direction: column; /* 세로로 정렬 */
-    justify-content: center; /* 내용 세로로 중앙 정렬 */
-    align-items: center; /* 가로로 중앙 정렬 */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .modal h3 {
@@ -133,40 +160,28 @@
     background-color: #0056b3;
 }
 
+/* 강사 상세 안내 문구 */
 .inst {
     font-size: 18px;
     margin-top: 20px;
     color: #696b6e;
 }
 
-/* 카드 스타일 */
+/* 카드 박스 */
 .card {
     background-color: white;
     border: 1px solid #e0e0e0;
     padding: 24px;
     margin-bottom: 50px;
+    border-radius: 8px;
 }
 
-.breadcrumb-list{
+/* 브레드크럼 여백 */
+.breadcrumb-list {
     margin-bottom: 20px !important;
 }
 
-.apply-button {
-    background-color: #007bff;
-    color: white;
-    padding: 6px 12px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-/* 신청 완료 상태일 때 색상 회색으로 변경 */
-.apply-button.applied {
-    background-color: #6c757d; /* 어두운 회색 */
-    cursor: not-allowed;
-    opacity: 0.8;
-}
-
+/* 상세 닫기 버튼 */
 .card-header {
     display: flex;
     justify-content: space-between;
@@ -181,9 +196,18 @@
     font-size: 16px;
     cursor: pointer;
     transition: background 0.3s ease;
+    border-radius: 50%;
 }
 
 .close-detail-button:hover {
     background: #999;
     color: white;
 }
+
+/* 수강 취소 안내 */
+.cansle {
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 30px;
+}
+

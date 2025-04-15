@@ -16,6 +16,9 @@
 .breadcrumb-wrapper {
     text-align: left;
     margin-left: 1rem;
+    margin-top: 15px;
+    margin-bottom: 25px;
+    font-size: 16px;
 }
 
 .breadcrumb-list li .separator {
@@ -24,4 +27,9 @@
 .active-breadcrumb {
     font-weight: bold;
     color: #2d3748; /* gray-800 */
+}
+
+.lect_applied_Breadcrumb{
+    margin-bottom: 200px !important;
+    background-color: #ffffff;
 }

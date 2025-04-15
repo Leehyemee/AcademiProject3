@@ -34,7 +34,21 @@ export default function LectureApplyPage() {
                         'Authorization': `Bearer ${accessToken}`,
                     },
                 });
+
+                if (response.status === 401) {
+                    alert('로그인이 만료되었습니다. 다시 로그인해주세요!');
+                    window.location.href = '/login'; // 또는 useRouter() 써서 router.push('/login')
+                    return;
+                }
+
                 const data = await response.json();
+
+                // 데이터가 배열인지 확인
+                if (!Array.isArray(data)) {
+                    console.error('서버 응답이 배열이 아닙니다:', data);
+                    return;
+                }
+
                 setLectures(data);
             } catch (error) {
                 console.error('강의 목록을 가져오는 데 실패했습니다:', error);
@@ -145,6 +159,8 @@ export default function LectureApplyPage() {
                     ))}
                     </tbody>
                 </table>
+
+                <h6 className="cansle">수강 취소는 <a href="/lect_applied" className="lecture-link">내 강의 정보</a> 에서 가능합니다.</h6>
             </div>
 
             {selectedLecture && (
@@ -164,7 +180,7 @@ export default function LectureApplyPage() {
                         <tr><th className="all_th">가격</th><td>{selectedLecture.lectPrice.toLocaleString()} 원</td></tr>
                         </tbody>
                     </table>
-                    <h4 className="inst">강사명 클릭 시 강사 상세정보 확인 가능.</h4>
+                    <h4 className="inst">강사명 클릭 시 강사 상세정보 확인 가능합니다.</h4>
                 </div>
             )}
         </div>
