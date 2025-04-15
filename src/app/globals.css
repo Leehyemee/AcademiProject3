@@ -59,31 +59,16 @@
 
 
 /* sidebar.css */
-/* 기본 상태 사이드바 */
-.sidebar {
-    width: 250px;
-    transition: width 0.3s ease;
-    position: fixed;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    z-index: 9999;
+/* 기본 상태: 사이드바가 펼쳐짐 */
+.main {
+    margin-left: 250px;  /* 사이드바 너비만큼 공간을 확보 */
+    transition: margin-left 0.3s ease;
 }
 
-/* 사이드바 접혔을 때 */
-.sidebar.collapsed {
-    width: 0;
-    overflow: hidden;
+/* 사이드바가 접힌 상태 */
+.main.expanded {
+    margin-left: 0;  /* 사이드바가 접혔을 때는 여백을 없애 콘텐츠가 확장됨 */
 }
 
-.sidebar .nav {
-    visibility: visible;
-    transition: visibility 0.3s ease, opacity 0.3s ease;
-}
-
-.sidebar.collapsed .nav {
-    visibility: hidden;
-    opacity: 0;
-}
 
 

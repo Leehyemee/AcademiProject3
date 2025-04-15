@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Swal from 'sweetalert2';
 import ReCAPTCHA from "react-google-recaptcha";
 import Image from 'next/image';
+import "../join.css";
 
 const checkIdAvailability = async (id) => {
     try {
@@ -173,7 +174,7 @@ const Join = () => {
             )}
 
             <div className="logo-wrap">
-                <Image src="/assets/img/academiLogo.png" alt="Logo" className="logo-img" />
+                <Image src="/assets/img/academiLogo.png" alt="Logo" className="logo-img" width={200} height={100}/>
             </div>
 
             <div className="join-box">

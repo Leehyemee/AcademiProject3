@@ -85,6 +85,32 @@ const Login = () => {
         return errors;
     };
 
+    const fetchWithAuth = async (url, options = {}) => {
+        const token = localStorage.getItem("accessToken");
+        if (token) {
+            options.headers = {
+                ...options.headers,
+                'Authorization': `Bearer ${token}`,
+            };
+        }
+
+        const response = await fetch(url, options);
+        return response;
+    };
+
+    const fetchUserData = async () => {
+        const response = await fetchWithAuth("http://localhost:8080/api/user/data", {
+            method: "GET",
+        });
+
+        if (response.ok) {
+            const userData = await response.json();
+            console.log("User Data:", userData);
+        } else {
+            console.error("Error fetching user data");
+        }
+    };
+
     return (
         <form ref={formLoginRef} onSubmit={handleLoginSubmit} className="form-login">
             <div className="form-group">
