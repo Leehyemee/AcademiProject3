@@ -12,7 +12,6 @@ const KakaoLogin = () => {
         window.location.href = authorizeUrl + params;
     }
 
-
     return (
         <div className="d-flex justify-content-center py-2 gap-2">
             <img

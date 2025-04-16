@@ -32,10 +32,10 @@ const KakaoOAuthHandler = () => {
             console.log('응답데이터 : ', data)
 
             // // 응답에서 access token 추출
-            // const token = data.access_token;
-            // console.log('엑세스 토큰:', token);
-            // localStorage.setItem("accessToken", token);
-            // localStorage.setItem("kakao", true); // 카카오 로그인 설정
+            const token = data.access_token;
+            console.log('엑세스 토큰:', token);
+            localStorage.setItem("accessToken", token);
+            localStorage.setItem("kakao", true); // 카카오 로그인 설정
             alert('로그인 성공!!');
             navigate("/myinfo", { replace: true });
         } catch (error) {

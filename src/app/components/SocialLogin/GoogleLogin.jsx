@@ -1,10 +1,14 @@
 "use client";
 
 const GoogleLogin = () => {
-    const GOOGLE_LOGIN_URL = process.env.NEXT_PUBLIC_GOOGLE_LOGIN_URL || "http://localhost:8080/api/oauth/google/login";
+    const GOOGLE_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
+    const GOOGLE_REDIRECT_URI = process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI;
 
     const handleGoogleLogin = () => {
-        window.location.href = GOOGLE_LOGIN_URL;
+        const authorizeUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
+        const params = `?client_id=${GOOGLE_API_KEY}&redirect_uri=${GOOGLE_REDIRECT_URI}&response_type=code&scope=openid profile email`;
+
+        window.location.href = authorizeUrl + params;
     };
 
     return (
