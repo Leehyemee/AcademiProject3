@@ -8,8 +8,10 @@ const TeacherLogin = () => {
     const [errors, setErrors] = useState({});
 
     const processLoginok = async (values) => {
+        console.log(values);
+
         try {
-            const response = await fetch("http://localhost:8080/api/auth/teacher/signin", {
+            const response = await fetch("http://localhost:8080/api/auth/inst/signin", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(values),
@@ -25,7 +27,7 @@ const TeacherLogin = () => {
                         icon: 'success',
                         confirmButtonText: '확인',
                     }).then(() => {
-                        location.href = "/teacher/dashboard";
+                        location.href = "http://localhost:3001/instDashboard";
                     });
                 } else {
                     Swal.fire({
@@ -70,11 +72,11 @@ const TeacherLogin = () => {
 
     const validateLoginForm = (values) => {
         const errors = {};
-        if (!values.teacherId || values.teacherId.length < 6) {
-            errors.teacherId = "아이디는 6자 이상 입력하세요!";
+        if (!values.instId || values.instId.length < 6) {
+            errors.instId = "아이디는 6자 이상 입력하세요!";
         }
-        if (!values.pwd || values.pwd.length < 6) {
-            errors.pwd = "비밀번호는 6자 이상 입력하세요!";
+        if (!values.passwd || values.passwd.length < 6) {
+            errors.passwd = "비밀번호는 6자 이상 입력하세요!";
         }
         return errors;
     };
@@ -84,21 +86,21 @@ const TeacherLogin = () => {
             <div className="form-group">
                 <input
                     type="text"
-                    name="teacherId"
+                    name="instId"
                     className="form-control"
                     placeholder="강사 아이디"
                 />
-                {errors.teacherId && <p className="error-msg">{errors.teacherId}</p>}
+                {errors.instId && <p className="error-msg">{errors.instId}</p>}
             </div>
 
             <div className="form-group">
                 <input
                     type="password"
-                    name="pwd"
+                    name="passwd"
                     className="form-control"
                     placeholder="비밀번호"
                 />
-                {errors.pwd && <p className="error-msg">{errors.pwd}</p>}
+                {errors.passwd && <p className="error-msg">{errors.passwd}</p>}
             </div>
 
 

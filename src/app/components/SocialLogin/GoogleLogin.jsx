@@ -1,8 +1,10 @@
 "use client";
 
 const GoogleLogin = () => {
+    const GOOGLE_LOGIN_URL = process.env.NEXT_PUBLIC_GOOGLE_LOGIN_URL || "http://localhost:8080/api/oauth/google/login";
+
     const handleGoogleLogin = () => {
-        window.location.href = "http://localhost:8080/api/oauth/google/login";
+        window.location.href = GOOGLE_LOGIN_URL;
     };
 
     return (

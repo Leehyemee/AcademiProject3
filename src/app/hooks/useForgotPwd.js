@@ -26,7 +26,7 @@ const useForgotPwd = () => {
                 console.log("응답 데이터:", data);
                 setEmail(data.email);
                 setStep(2);
-                Swal.fire({ icon: "success", title: "성공", text: "이메일 전송 완료!" });
+                Swal.fire({ icon: "success", title: "이메일로 인증 코드가 발송되었습니다.", text: "이메일에서 인증 절차를 완료하세요!" });
             } else {
                 Swal.fire({ icon: "error", title: "실패", text: await res.text() });
             }

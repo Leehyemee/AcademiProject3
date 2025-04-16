@@ -30,9 +30,9 @@ const SideBar = () => {
                             onToggle={toggleSubMenu("course")}
                             links={[
                                 { href: "/lect_apply", label: "수강 신청" },
-                                { href: "/dashboard", label: "과제 관리" },
-                                { href: "/dashboard", label: "설문 관리" },
                                 { href: "/lect_applied", label: "내 강의 정보" },
+                                { href: "/assignment", label: "과제 관리" },
+                                { href: "/survey", label: "설문 관리" },
                             ]}
                         />
 
@@ -43,8 +43,8 @@ const SideBar = () => {
                             isCollapsed={collapsedMenus.post}
                             onToggle={toggleSubMenu("post")}
                             links={[
-                                { href: "/board", label: "강의게시판" },
-                                { href: "/dashboard", label: "Q&A" },
+                                { href: "/board", label: "전체 게시판" },
+                                { href: "/Q&A", label: "Q&A" },
                             ]}
                         />
 
@@ -57,11 +57,11 @@ const SideBar = () => {
                             links={[{ href: "/myinfo", label: "회원 정보" }]}
                         />
 
-                        <li>
-                            <Link href="/icons">
-                                <i className="lnr lnr-linearicons"></i> <span>Icons</span>
-                            </Link>
-                        </li>
+                        {/*<li>*/}
+                        {/*    <Link href="/icons">*/}
+                        {/*        <i className="lnr lnr-linearicons"></i> <span>Icons</span>*/}
+                        {/*    </Link>*/}
+                        {/*</li>*/}
                     </ul>
                 </nav>
             </div>

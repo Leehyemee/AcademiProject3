@@ -37,13 +37,12 @@ export default function LectureApplyPage() {
 
                 if (response.status === 401) {
                     alert('로그인이 만료되었습니다. 다시 로그인해주세요!');
-                    window.location.href = '/login'; // 또는 useRouter() 써서 router.push('/login')
+                    window.location.href = '/login';
                     return;
                 }
 
                 const data = await response.json();
 
-                // 데이터가 배열인지 확인
                 if (!Array.isArray(data)) {
                     console.error('서버 응답이 배열이 아닙니다:', data);
                     return;
@@ -59,6 +58,8 @@ export default function LectureApplyPage() {
     }, []);
 
     const handleDetailClick = (lecture) => setSelectedLecture(lecture);
+
+
 
     const handleApply = async (lecture) => {
         if (lecture.applied) {
@@ -93,13 +94,9 @@ export default function LectureApplyPage() {
 
                 if (response.ok) {
                     await Swal.fire('신청 완료!', `"${lecture.lectNm}" 수강 신청이 완료되었습니다.`, 'success');
-                    // 상태 업데이트: 해당 강의 applied = true로
                     setLectures(prev =>
                         prev.map(l => l.lectNo === lecture.lectNo ? { ...l, applied: true } : l)
                     );
-                } else if (response.status === 409) {
-                    const errorText = await response.text();
-                    await Swal.fire('이미 신청한 강의입니다!', errorText, 'info');
                 } else {
                     const errorText = await response.text();
                     await Swal.fire('오류 발생', errorText || '알 수 없는 오류입니다.', 'error');
@@ -134,11 +131,7 @@ export default function LectureApplyPage() {
                     {lectures.map((lect) => (
                         <tr key={lect.lectNo}>
                             <td>{lect.lectNm}</td>
-                            <td>
-                                    <span className="inst-name" onClick={() => handleDetailClick(lect)}>
-                                        {lect.instNm}
-                                    </span>
-                            </td>
+                            <td>{lect.instNm}</td>
                             <td>{formatDate(lect.lectStart)}</td>
                             <td>{formatDate(lect.lectSubmit)}</td>
                             <td>{lect.lectLoc}</td>
@@ -180,9 +173,9 @@ export default function LectureApplyPage() {
                         <tr><th className="all_th">가격</th><td>{selectedLecture.lectPrice.toLocaleString()} 원</td></tr>
                         </tbody>
                     </table>
-                    <h4 className="inst">강사명 클릭 시 강사 상세정보 확인 가능합니다.</h4>
                 </div>
             )}
+
         </div>
     );
 }
